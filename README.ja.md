@@ -14,9 +14,7 @@ GitHub Action 用テストヘルパー
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Setup](#setup)
-  - [yarn](#yarn)
-  - [npm](#npm)
+- [使用方法](#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 - [Author](#author)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
