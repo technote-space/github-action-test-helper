@@ -1,27 +1,29 @@
 {
-  "name": "@technote-space/ts-package-template",
+  "name": "@technote-space/github-action-test-helper",
   "version": "0.0.1",
-  "description": "Template for npm package.",
+  "description": "Test helper for GitHub Action.",
   "author": "Technote <technote.space@gmail.com> (https://technote.space)",
   "license": "MIT",
   "keywords": [
     "github",
     "github actions"
   ],
-  "homepage": "https://github.com/technote-space/ts-package-template",
+  "homepage": "https://github.com/technote-space/github-action-test-helper",
   "repository": {
     "type": "git",
-    "url": "https://github.com/technote-space/ts-package-template.git"
+    "url": "https://github.com/technote-space/github-action-test-helper.git"
   },
   "bugs": {
-    "url": "https://github.com/technote-space/ts-package-template/issues"
+    "url": "https://github.com/technote-space/github-action-test-helper/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@actions/github": "^1.1.0"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
@@ -37,7 +39,6 @@
     "access": "public"
   },
   "scripts": {
-    "setup": "bash bin/setup.sh && rm -rdf bin",
     "build": "tsc",
     "test": "yarn lint && yarn cover",
     "lint": "eslint src/**/**/*.ts && eslint __tests__/**/**/*.ts",

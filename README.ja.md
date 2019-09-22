@@ -6,7 +6,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/technote-space/github-action-test-helper/badge)](https://www.codefactor.io/repository/github/technote-space/github-action-test-helper)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/technote-space/github-action-test-helper/blob/master/LICENSE)
 
-Test helper for GitHub Action.
+GitHub Action 用テストヘルパー
 
 *Read this in other languages: [English](README.md), [日本語](README.ja.md).*
 
@@ -21,10 +21,10 @@ Test helper for GitHub Action.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Usage
-1. Install  
+## 使用方法
+1. インストール  
 `npm i @technote-space/github-action-test-helper`
-1. Use
+1. 使用
 ```js
 import { getContext, encodeContent, getConfigFixture, getApiFixture, disableNetConnect, testEnv } from '@technote-space/github-action-test-helper';
 import nock from 'nock';
