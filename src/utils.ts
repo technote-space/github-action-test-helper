@@ -35,7 +35,7 @@ export const testFs = (defaultExists = false): (boolean) => void => {
 	});
 
 	afterEach(() => {
-		spy.forEach(spy => spy.mockClear());
+		spy.forEach(spy => spy.mockRestore());
 		spy.length = 0;
 		exists = defaultExists;
 	});
