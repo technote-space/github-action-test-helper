@@ -24,7 +24,21 @@ Test helper for GitHub Action.
 `npm i @technote-space/github-action-test-helper`
 1. Use
 ```js
-import { getContext, encodeContent, getConfigFixture, getApiFixture, disableNetConnect, testEnv } from '@technote-space/github-action-test-helper';
+import {
+	getContext,
+	encodeContent,
+	getConfigFixture,
+	getApiFixture,
+	disableNetConnect,
+	testEnv,
+	testChildProcess,
+	spyOnStdout,
+	stdoutCalledWith,
+	spyOnExec,
+	execCalledWith,
+	testProperties,
+	setupGlobal,
+} from '@technote-space/github-action-test-helper';
 import nock from 'nock';
 
 getContext({});
@@ -33,6 +47,13 @@ getConfigFixture('rootDir', 'fileName');
 getApiFixture('rootDir', 'name');
 disableNetConnect(nock);
 testEnv();
+testChildProcess();
+const stdoutSpy = spyOnStdout();
+stdoutCalledWith(stdoutSpy, []);
+const execSpy = spyOnExec();
+execCalledWith(execSpy, []);
+testProperties({}, {});
+setupGlobal();
 ```
 
 ## Author
