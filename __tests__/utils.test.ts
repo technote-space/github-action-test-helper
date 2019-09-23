@@ -1,7 +1,8 @@
 /* eslint-disable no-magic-numbers */
 import { EOL } from 'os';
 import { exec } from 'child_process';
-import { testEnv, testChildProcess, spyOnStdout, stdoutCalledWith, spyOnExec, execCalledWith, testProperties } from '../src';
+import fs from 'fs';
+import { testEnv, testChildProcess, testFs, spyOnStdout, stdoutCalledWith, spyOnExec, execCalledWith, testProperties } from '../src';
 import global from '../src/global';
 
 beforeAll(() => {
@@ -46,6 +47,23 @@ describe('testChildProcess', () => {
 		expect(global.mockChildProcess.stdout).toBe('stdout');
 		expect(global.mockChildProcess.stderr).toBe('');
 		expect(global.mockChildProcess.error).toBe(null);
+	});
+});
+
+describe('testFs', () => {
+	const func = testFs();
+
+	it('should return false 1', () => {
+		expect(fs.existsSync('')).toBeFalsy();
+	});
+
+	it('should return true', () => {
+		func(true);
+		expect(fs.existsSync('')).toBeTruthy();
+	});
+
+	it('should return false 2', () => {
+		expect(fs.existsSync('')).toBeFalsy();
 	});
 });
 

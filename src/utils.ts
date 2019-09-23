@@ -1,5 +1,6 @@
 import global from './global';
 import { EOL } from 'os';
+import fs from 'fs';
 import SpyInstance = jest.SpyInstance;
 
 export const testEnv = (): void => {
@@ -22,6 +23,26 @@ export const testChildProcess = (): void => {
 		global.mockChildProcess.stderr = '';
 		global.mockChildProcess.error = null;
 	});
+};
+
+export const testFs = (defaultExists = false): (boolean) => void => {
+	let exists = defaultExists;
+	const spy: SpyInstance[] = [];
+	beforeEach(() => {
+		spy.push(jest.spyOn(fs, 'writeFileSync').mockImplementation(jest.fn()));
+		spy.push(jest.spyOn(fs, 'mkdirSync').mockImplementation(jest.fn()));
+		spy.push(jest.spyOn(fs, 'existsSync').mockImplementation(() => exists));
+	});
+
+	afterEach(() => {
+		spy.forEach(spy => spy.mockClear());
+		spy.length = 0;
+		exists = defaultExists;
+	});
+
+	return (flag: boolean): void => {
+		exists = flag;
+	};
 };
 
 export const spyOnStdout = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
