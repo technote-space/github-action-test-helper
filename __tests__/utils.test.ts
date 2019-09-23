@@ -1,6 +1,8 @@
 /* eslint-disable no-magic-numbers */
-import path from 'path';
-import { getContext, getConfigFixture, getApiFixture, disableNetConnect, encodeContent, testEnv } from '../src';
+import { EOL } from 'os';
+import { exec } from 'child_process';
+import { testEnv, testChildProcess, spyOnStdout, stdoutCalledWith, spyOnExec, execCalledWith, testProperties } from '../src';
+import global from '../src/global';
 
 beforeAll(() => {
 	process.env.TEST_ENV = 'test';
@@ -8,72 +10,6 @@ beforeAll(() => {
 
 afterAll(() => {
 	delete process.env.TEST_ENV;
-});
-
-describe('getContext', () => {
-	it('should get context', () => {
-		const context = getContext({});
-		expect(context.eventName).toBe('');
-		expect(context.payload.action).toBe('');
-		expect(context.sha).toBe('');
-	});
-
-	it('should override', () => {
-		const context = getContext({
-			payload: {
-				action: 'opened',
-			},
-			eventName: 'issue',
-		});
-		expect(context.eventName).toBe('issue');
-		expect(context.payload.action).toBe('opened');
-		expect(context.sha).toBe('');
-	});
-});
-
-describe('getConfigFixture', () => {
-	it('should get config fixture', () => {
-		const config = getConfigFixture(path.resolve(__dirname, 'fixtures'));
-		expect(config).toHaveProperty('name');
-		expect(config).toHaveProperty('path');
-		expect(config).toHaveProperty('content');
-		expect(config['name']).toBe('config.yml');
-		expect(config['path']).toBe('.github/config.yml');
-		expect(config['content']).toBe(encodeContent(
-			`Backlog:
-  test1:
-    - 'Status: test1'
-  test2:
-    - 'Status: test2-1'
-    - 'Status: test2-2'
-`,
-		));
-	});
-});
-
-describe('getApiFixture', () => {
-	it('should get api fixture', () => {
-		const data = getApiFixture(path.resolve(__dirname, 'fixtures'), 'api.test');
-		expect(data).toHaveProperty('test');
-		expect(data['test']).toBe(123);
-	});
-});
-
-describe('disableNetConnect', () => {
-	const fn1 = jest.fn();
-	const fn2 = jest.fn();
-	const fn3 = jest.fn();
-	disableNetConnect({
-		disableNetConnect: fn1,
-		cleanAll: fn2,
-		enableNetConnect: fn3,
-	});
-
-	it('should disable net connect', () => {
-		expect(fn1).toBeCalledTimes(1);
-		expect(fn2).toBeCalledTimes(0);
-		expect(fn3).toBeCalledTimes(0);
-	});
 });
 
 describe('testEnv', () => {
@@ -87,5 +23,97 @@ describe('testEnv', () => {
 
 	it('should be reset env', () => {
 		expect(process.env.TEST_ENV).toBe('test');
+	});
+});
+
+describe('testChildProcess', () => {
+	testChildProcess();
+
+	it('should set mock params', () => {
+		expect(global.mockChildProcess.stdout).toBe('stdout');
+		expect(global.mockChildProcess.stderr).toBe('');
+		expect(global.mockChildProcess.error).toBe(null);
+		expect(global.mockChildProcess.error).toBeFalsy();
+		global.mockChildProcess.stdout = 'test-stdout';
+		global.mockChildProcess.stderr = 'test-stderr';
+		global.mockChildProcess.error = new Error('test-error');
+		expect(global.mockChildProcess.stdout).toBe('test-stdout');
+		expect(global.mockChildProcess.stderr).toBe('test-stderr');
+		expect(global.mockChildProcess.error).not.toBeFalsy();
+	});
+
+	it('should be reset env', () => {
+		expect(global.mockChildProcess.stdout).toBe('stdout');
+		expect(global.mockChildProcess.stderr).toBe('');
+		expect(global.mockChildProcess.error).toBe(null);
+	});
+});
+
+describe('spyOnStdout, stdoutCalledWith', () => {
+	it('should spy on stdout', () => {
+		const spy = spyOnStdout();
+
+		process.stdout.write('test1' + EOL);
+		process.stdout.write('test2' + EOL);
+
+		stdoutCalledWith(spy, [
+			'test1',
+			'test2',
+		]);
+	});
+});
+
+describe('spyOnExec, execCalledWith', () => {
+	it('should spy on stdout', () => {
+		const spy = spyOnExec();
+		const callback = jest.fn();
+
+		exec('test1', callback);
+		exec('test2', {}, callback);
+
+		execCalledWith(spy, [
+			'test1',
+			'test2',
+		]);
+	});
+});
+
+describe('testProperties', () => {
+	it('should test properties', () => {
+		testProperties({
+			test1: 1,
+			test2: 'test2',
+			test3: [1, 2, 3],
+			test4: {a: 'b'},
+			test5: 1,
+			test6: 'test2',
+			test7: [1, 2, 3],
+			test8: {a: 'b'},
+		}, {
+			test1: 1,
+			test2: 'test2',
+			test3: [1, 2, 3],
+			test4: {a: 'b'},
+		});
+	});
+
+	it('should throw error', () => {
+		expect(() => {
+			testProperties({
+				test1: 1,
+				test2: 'test2',
+				test3: [1, 2, 3],
+				test4: {a: 'b'},
+				test5: 1,
+				test6: 'test2',
+				test7: [1, 2, 3],
+				test8: {a: 'b'},
+			}, {
+				test1: 1,
+				test2: 'test2',
+				test3: [1, 2, 3],
+				test4: {a: 'c'},
+			});
+		}).toThrow();
 	});
 });

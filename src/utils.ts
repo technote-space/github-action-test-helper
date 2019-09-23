@@ -1,68 +1,6 @@
-import { Context } from '@actions/github/lib/context';
-import path from 'path';
-import fs from 'fs';
-
-export const getContext = (override: object): Context => Object.assign({
-	payload: {
-		action: '',
-	},
-	eventName: '',
-	sha: '',
-	ref: '',
-	workflow: '',
-	action: '',
-	actor: '',
-	issue: {
-		owner: '',
-		repo: '',
-		number: 1,
-	},
-	repo: {
-		owner: '',
-		repo: '',
-	},
-}, override);
-
-export const encodeContent = (content: string): string => Buffer.from(content).toString('base64');
-
-export const getConfigFixture = (rootDir: string, fileName = 'config.yml'): object => ({
-	type: 'file',
-	encoding: 'base64',
-	size: 5362,
-	name: fileName,
-	path: `.github/${fileName}`,
-	content: encodeContent(fs.readFileSync(path.resolve(rootDir, fileName)).toString()),
-	sha: '3d21ec53a331a6f037a91c368710b99387d012c1',
-	url:
-		'https://api.github.com/repos/Codertocat/Hello-World/contents/.github/release-drafter.yml',
-	'git_url':
-		'https://api.github.com/repos/Codertocat/Hello-World/git/blobs/3d21ec53a331a6f037a91c368710b99387d012c1',
-	'html_url':
-		'https://github.com/Codertocat/Hello-World/blob/master/.github/release-drafter.yml',
-	'download_url':
-		'https://raw.githubusercontent.com/Codertocat/Hello-World/master/.github/release-drafter.yml',
-	_links: {
-		git:
-			'https://api.github.com/repos/Codertocat/Hello-World/git/blobs/3d21ec53a331a6f037a91c368710b99387d012c1',
-		self:
-			'https://api.github.com/repos/Codertocat/Hello-World/contents/.github/release-drafter.yml',
-		html:
-			'https://github.com/Codertocat/Hello-World/blob/master/.github/release-drafter.yml',
-	},
-});
-
-export const getApiFixture = (rootDir: string, name: string): object => JSON.parse(fs.readFileSync(path.resolve(rootDir, `${name}.json`)).toString());
-
-export const disableNetConnect = (nock): void => {
-	beforeEach(() => {
-		nock.disableNetConnect();
-	});
-
-	afterEach(() => {
-		nock.cleanAll();
-		nock.enableNetConnect();
-	});
-};
+import global from './global';
+import { EOL } from 'os';
+import SpyInstance = jest.SpyInstance;
 
 export const testEnv = (): void => {
 	const OLD_ENV = process.env;
@@ -75,5 +13,42 @@ export const testEnv = (): void => {
 
 	afterEach(() => {
 		process.env = OLD_ENV;
+	});
+};
+
+export const testChildProcess = (): void => {
+	afterEach(() => {
+		global.mockChildProcess.stdout = 'stdout';
+		global.mockChildProcess.stderr = '';
+		global.mockChildProcess.error = null;
+	});
+};
+
+export const spyOnStdout = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
+export const stdoutCalledWith = (spyOnMock: SpyInstance, messages: string[]): void => {
+	expect(spyOnMock).toBeCalledTimes(messages.length);
+	messages.forEach((message, index) => {
+		expect(spyOnMock.mock.calls[index][0]).toBe(message + EOL);
+	});
+};
+
+export const spyOnExec = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
+export const execCalledWith = (spyOnMock: SpyInstance, messages: string[]): void => {
+	expect(spyOnMock).toBeCalledTimes(messages.length);
+	messages.forEach((message, index) => {
+		expect(spyOnMock.mock.calls[index][0]).toBe(message);
+	});
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const testProperties = (object: any, checks: { [key: string]: any }): void => {
+	expect(typeof object).toBe('object');
+	Object.keys(checks).forEach(key => {
+		expect(object).toHaveProperty(key);
+		if (typeof checks[key] === 'object') {
+			expect(object[key]).toEqual(checks[key]);
+		} else {
+			expect(object[key]).toBe(checks[key]);
+		}
 	});
 };
