@@ -25,6 +25,18 @@ export const testChildProcess = (): void => {
 	});
 };
 
+export const setChildProcessParams = (params: { stdout?: string; stderr?: string; error?: Error }): void => {
+	if ('string' === typeof params.stdout) {
+		global.mockChildProcess.stdout = params.stdout;
+	}
+	if ('string' === typeof params.stderr) {
+		global.mockChildProcess.stderr = params.stderr;
+	}
+	if (params.error instanceof Error) {
+		global.mockChildProcess.error = params.error;
+	}
+};
+
 export const testFs = (defaultExists = false): (boolean) => void => {
 	let exists = defaultExists;
 	const spy: SpyInstance[] = [];

@@ -2,7 +2,17 @@
 import { EOL } from 'os';
 import { exec } from 'child_process';
 import fs from 'fs';
-import { testEnv, testChildProcess, testFs, spyOnStdout, stdoutCalledWith, spyOnExec, execCalledWith, testProperties } from '../src';
+import {
+	testEnv,
+	testChildProcess,
+	setChildProcessParams,
+	testFs,
+	spyOnStdout,
+	stdoutCalledWith,
+	spyOnExec,
+	execCalledWith,
+	testProperties,
+} from '../src';
 import global from '../src/global';
 
 beforeAll(() => {
@@ -27,7 +37,7 @@ describe('testEnv', () => {
 	});
 });
 
-describe('testChildProcess', () => {
+describe('testChildProcess, setChildProcessParams', () => {
 	testChildProcess();
 
 	it('should set mock params', () => {
@@ -35,15 +45,27 @@ describe('testChildProcess', () => {
 		expect(global.mockChildProcess.stderr).toBe('');
 		expect(global.mockChildProcess.error).toBe(null);
 		expect(global.mockChildProcess.error).toBeFalsy();
-		global.mockChildProcess.stdout = 'test-stdout';
-		global.mockChildProcess.stderr = 'test-stderr';
-		global.mockChildProcess.error = new Error('test-error');
+
+		setChildProcessParams({stdout: 'test-stdout', stderr: 'test-stderr', error: new Error('test-error')});
+
 		expect(global.mockChildProcess.stdout).toBe('test-stdout');
 		expect(global.mockChildProcess.stderr).toBe('test-stderr');
 		expect(global.mockChildProcess.error).not.toBeFalsy();
 	});
 
 	it('should be reset env', () => {
+		expect(global.mockChildProcess.stdout).toBe('stdout');
+		expect(global.mockChildProcess.stderr).toBe('');
+		expect(global.mockChildProcess.error).toBe(null);
+	});
+
+	it('should not set mock params', () => {
+		expect(global.mockChildProcess.stdout).toBe('stdout');
+		expect(global.mockChildProcess.stderr).toBe('');
+		expect(global.mockChildProcess.error).toBe(null);
+
+		setChildProcessParams({});
+
 		expect(global.mockChildProcess.stdout).toBe('stdout');
 		expect(global.mockChildProcess.stderr).toBe('');
 		expect(global.mockChildProcess.error).toBe(null);
