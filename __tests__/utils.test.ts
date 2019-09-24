@@ -110,10 +110,12 @@ describe('spyOnExec, execCalledWith', () => {
 
 		exec('test1', callback);
 		exec('test2', {}, callback);
+		exec('test3', {cwd: '.work'}, callback);
 
 		execCalledWith(spy, [
 			'test1',
 			'test2',
+			['test3', {cwd: '.work'}],
 		]);
 	});
 });

@@ -66,10 +66,21 @@ export const stdoutCalledWith = (spyOnMock: SpyInstance, messages: string[]): vo
 };
 
 export const spyOnExec = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
-export const execCalledWith = (spyOnMock: SpyInstance, messages: string[]): void => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);
 	messages.forEach((message, index) => {
-		expect(spyOnMock.mock.calls[index][0]).toBe(message);
+		if ('string' === typeof message) {
+			expect(spyOnMock.mock.calls[index][0]).toBe(message);
+		} else {
+			message.forEach((message, index2) => {
+				if (typeof spyOnMock.mock.calls[index][index2] === 'object') {
+					expect(spyOnMock.mock.calls[index][index2]).toEqual(message);
+				} else {
+					expect(spyOnMock.mock.calls[index][index2]).toBe(message);
+				}
+			});
+		}
 	});
 };
 
