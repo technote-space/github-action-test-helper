@@ -32,6 +32,7 @@ import {
 	disableNetConnect,
 	testEnv,
 	testChildProcess,
+	setChildProcessParams,
 	testFs,
 	spyOnStdout,
 	stdoutCalledWith,
@@ -49,6 +50,7 @@ getApiFixture('rootDir', 'name');
 disableNetConnect(nock);
 testEnv();
 testChildProcess();
+setChildProcessParams({stdout: 'test-stdout', stderr: 'test-stderr', error: new Error('test-error')});
 testFs();
 const stdoutSpy = spyOnStdout();
 stdoutCalledWith(stdoutSpy, []);
