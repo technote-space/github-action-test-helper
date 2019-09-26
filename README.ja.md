@@ -26,6 +26,7 @@ GitHub Action 用テストヘルパー
 ```js
 import {
 	getContext,
+	generateContext,
 	encodeContent,
 	getConfigFixture,
 	getApiFixture,
@@ -44,6 +45,7 @@ import {
 import nock from 'nock';
 
 getContext({});
+generateContext({});
 encodeContent('content');
 getConfigFixture('rootDir', 'fileName');
 getApiFixture('rootDir', 'name');
