@@ -22,24 +22,29 @@ export const getContext = (override: object): Context => Object.assign({
 	},
 }, override);
 
-export const generateContext = (settings: { event?: string; action?: string; ref?: string; sha?: string; owner?: string; repo?: string }, override?: object): Context => getContext(
-	Object.assign({
-		eventName: settings.event ? settings.event : '',
-		payload: {
-			action: settings.action ? settings.action : '',
-		},
-		ref: settings.ref ? `refs/${settings.ref}` : '',
-		sha: settings.sha ? settings.sha : '',
-		issue: {
-			owner: settings.owner ? settings.owner : '',
-			repo: settings.repo ? settings.repo : '',
-		},
-		repo: {
-			owner: settings.owner ? settings.owner : '',
-			repo: settings.repo ? settings.repo : '',
-		},
-	}, override || {}),
-);
+export const generateContext = (settings: { event?: string; action?: string; ref?: string; sha?: string; owner?: string; repo?: string }, override?: object): Context => {
+	const overrideObj = override || {};
+
+	return getContext(
+		Object.assign({}, {
+			eventName: settings.event ? settings.event : '',
+			ref: settings.ref ? `refs/${settings.ref}` : '',
+			sha: settings.sha ? settings.sha : '',
+		}, overrideObj, {
+			payload: Object.assign({
+				action: settings.action ? settings.action : '',
+			}, overrideObj['payload'] || {}),
+			issue: Object.assign({
+				owner: settings.owner ? settings.owner : '',
+				repo: settings.repo ? settings.repo : '',
+			}, overrideObj['issue'] || {}),
+			repo: Object.assign({
+				owner: settings.owner ? settings.owner : '',
+				repo: settings.repo ? settings.repo : '',
+			}, overrideObj['repo'] || {}),
+		}),
+	);
+};
 
 type CreateResponseFunctionType = <T>(data: T, override?: object) => Response<T>;
 export const createResponse: CreateResponseFunctionType = (data, override = {}) => Object.assign({

@@ -70,6 +70,11 @@ describe('generateContext', () => {
 				owner: 'override-owner',
 				repo: 'override-repo',
 			},
+			payload: {
+				release: {
+					'tag_name': 'test-tag',
+				},
+			},
 		});
 		expect(context.eventName).toBe('override-event');
 		expect(context.payload.action).toBe('test-action');
@@ -79,6 +84,7 @@ describe('generateContext', () => {
 		expect(context.repo.owner).toBe('override-owner');
 		expect(context.issue.repo).toBe('test-repo');
 		expect(context.repo.repo).toBe('override-repo');
+		expect(context.payload.release.tag_name).toBe('test-tag');
 	});
 });
 
