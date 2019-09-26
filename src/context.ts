@@ -22,6 +22,25 @@ export const getContext = (override: object): Context => Object.assign({
 	},
 }, override);
 
+export const generateContext = (settings: { event?: string; action?: string; ref?: string; sha?: string; owner?: string; repo?: string }, override?: object): Context => getContext(
+	Object.assign({
+		eventName: settings.event ? settings.event : '',
+		payload: {
+			action: settings.action ? settings.action : '',
+		},
+		ref: settings.ref ? `refs/${settings.ref}` : '',
+		sha: settings.sha ? settings.sha : '',
+		issue: {
+			owner: settings.owner ? settings.owner : '',
+			repo: settings.repo ? settings.repo : '',
+		},
+		repo: {
+			owner: settings.owner ? settings.owner : '',
+			repo: settings.repo ? settings.repo : '',
+		},
+	}, override || {}),
+);
+
 type CreateResponseFunctionType = <T>(data: T, override?: object) => Response<T>;
 export const createResponse: CreateResponseFunctionType = (data, override = {}) => Object.assign({
 	data,
