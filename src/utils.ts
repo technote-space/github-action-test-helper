@@ -1,6 +1,6 @@
 import global from './global';
 import { EOL } from 'os';
-import fs from 'fs';
+import fs, { PathLike } from 'fs';
 import SpyInstance = jest.SpyInstance;
 
 export const testEnv = (): void => {
@@ -38,22 +38,43 @@ export const setChildProcessParams = (params: { stdout?: string; stderr?: string
 };
 
 export const testFs = (defaultExists = false): (boolean) => void => {
-	let exists = defaultExists;
+	let existsData: boolean[] = [defaultExists];
+	let callback: ((PathLike) => boolean) | undefined = undefined;
+	let count = 0;
 	const spy: SpyInstance[] = [];
 	beforeEach(() => {
 		spy.push(jest.spyOn(fs, 'writeFileSync').mockImplementation(jest.fn()));
 		spy.push(jest.spyOn(fs, 'mkdirSync').mockImplementation(jest.fn()));
-		spy.push(jest.spyOn(fs, 'existsSync').mockImplementation(() => exists));
+		spy.push(jest.spyOn(fs, 'existsSync').mockImplementation((path: PathLike): boolean => {
+			if (typeof callback === 'function') {
+				return callback(path);
+			}
+
+			// eslint-disable-next-line no-magic-numbers
+			const result = count < existsData.length ? existsData[count] : existsData[existsData.length - 1];
+			count++;
+			return result;
+		}));
 	});
 
 	afterEach(() => {
 		spy.forEach(spy => spy.mockRestore());
 		spy.length = 0;
-		exists = defaultExists;
+		callback = undefined;
+		existsData = [defaultExists];
+		// eslint-disable-next-line no-magic-numbers
+		count = 0;
 	});
 
-	return (flag: boolean): void => {
-		exists = flag;
+	return (flag: boolean | boolean[] | ((PathLike) => boolean)): void => {
+		callback = undefined;
+		if (typeof flag === 'function') {
+			callback = flag;
+		} else if (typeof flag === 'boolean') {
+			existsData = [flag];
+		} else {
+			existsData = flag;
+		}
 	};
 };
 

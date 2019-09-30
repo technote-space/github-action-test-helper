@@ -73,19 +73,52 @@ describe('testChildProcess, setChildProcessParams', () => {
 });
 
 describe('testFs', () => {
-	const func = testFs();
+	describe('without default', () => {
+		const func = testFs();
 
-	it('should return false 1', () => {
-		expect(fs.existsSync('')).toBeFalsy();
+		it('should return false 1', () => {
+			expect(fs.existsSync('')).toBeFalsy();
+		});
+
+		it('should return true', () => {
+			func(true);
+			expect(fs.existsSync('')).toBeTruthy();
+		});
+
+		it('should return false 2', () => {
+			expect(fs.existsSync('')).toBeFalsy();
+		});
+
+		it('should return different each time', () => {
+			func([true, false, true]);
+			expect(fs.existsSync('')).toBeTruthy();
+			expect(fs.existsSync('')).toBeFalsy();
+			expect(fs.existsSync('')).toBeTruthy();
+			expect(fs.existsSync('')).toBeTruthy();
+		});
+
+		it('should return result depends on file name', () => {
+			func((filepath: string): boolean => filepath.includes('test'));
+			expect(fs.existsSync('/tmp/test.txt')).toBeTruthy();
+			expect(fs.existsSync('/tmp/abc.txt')).toBeFalsy();
+		});
 	});
 
-	it('should return true', () => {
-		func(true);
-		expect(fs.existsSync('')).toBeTruthy();
-	});
+	describe('with default true', () => {
+		const func = testFs(true);
 
-	it('should return false 2', () => {
-		expect(fs.existsSync('')).toBeFalsy();
+		it('should return true 1', () => {
+			expect(fs.existsSync('')).toBeTruthy();
+		});
+
+		it('should return false', () => {
+			func(false);
+			expect(fs.existsSync('')).toBeFalsy();
+		});
+
+		it('should return true 2', () => {
+			expect(fs.existsSync('')).toBeTruthy();
+		});
 	});
 });
 
