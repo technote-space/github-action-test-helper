@@ -1,4 +1,5 @@
 /* eslint-disable no-magic-numbers */
+import { EOL } from 'os';
 import global from './global';
 
 export const setupGlobal = (): void => {
@@ -6,6 +7,9 @@ export const setupGlobal = (): void => {
 		write: jest.fn(),
 	};
 	process.stdout.write = global.mockStdout.write;
+	console.log = jest.fn(value => process.stdout.write(JSON.stringify(value, null, '\t') + EOL));
+	console.error = jest.fn(value => process.stdout.write(JSON.stringify(value, null, '\t') + EOL));
+	console.debug = jest.fn(value => process.stdout.write(JSON.stringify(value, null, '\t') + EOL));
 
 	global.mockChildProcess = {
 		stdout: 'stdout',

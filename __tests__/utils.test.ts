@@ -128,10 +128,15 @@ describe('spyOnStdout, stdoutCalledWith', () => {
 
 		process.stdout.write('test1' + EOL);
 		process.stdout.write('test2' + EOL);
+		console.log({
+			test1: 'test1',
+			test2: 'test2',
+		});
 
 		stdoutCalledWith(spy, [
 			'test1',
 			'test2',
+			'{\n\t"test1": "test1",\n\t"test2": "test2"\n}',
 		]);
 	});
 });
