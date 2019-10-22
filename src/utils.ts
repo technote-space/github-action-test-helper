@@ -26,10 +26,10 @@ export const testChildProcess = (): void => {
 };
 
 export const setChildProcessParams = (params: { stdout?: string; stderr?: string; error?: Error }): void => {
-	if ('string' === typeof params.stdout) {
+	if (typeof params.stdout === 'string') {
 		global.mockChildProcess.stdout = params.stdout;
 	}
-	if ('string' === typeof params.stderr) {
+	if (typeof params.stderr === 'string') {
 		global.mockChildProcess.stderr = params.stderr;
 	}
 	if (params.error instanceof Error) {
@@ -91,7 +91,7 @@ export const spyOnExec = (): SpyInstance => jest.spyOn(global.mockChildProcess, 
 export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);
 	messages.forEach((message, index) => {
-		if ('string' === typeof message) {
+		if (typeof message === 'string') {
 			expect(spyOnMock.mock.calls[index][0]).toBe(message);
 		} else {
 			message.forEach((message, index2) => {
