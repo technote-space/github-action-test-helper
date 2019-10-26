@@ -5,6 +5,7 @@ describe('getContext', () => {
 	it('should get context', () => {
 		const context = getContext({});
 		expect(context.eventName).toBe('');
+		expect(context.action).toBe('');
 		expect(context.payload.action).toBe('');
 		expect(context.sha).toBe('');
 	});
@@ -17,6 +18,7 @@ describe('getContext', () => {
 			eventName: 'issue',
 		});
 		expect(context.eventName).toBe('issue');
+		expect(context.action).toBe('');
 		expect(context.payload.action).toBe('opened');
 		expect(context.sha).toBe('');
 	});
@@ -26,6 +28,7 @@ describe('generateContext', () => {
 	it('should generate context 1', () => {
 		const context = generateContext({});
 		expect(context.eventName).toBe('');
+		expect(context.action).toBe('');
 		expect(context.payload.action).toBe('');
 		expect(context.ref).toBe('');
 		expect(context.sha).toBe('');
@@ -45,6 +48,7 @@ describe('generateContext', () => {
 			repo: 'test-repo',
 		});
 		expect(context.eventName).toBe('test-event');
+		expect(context.action).toBe('test-action');
 		expect(context.payload.action).toBe('test-action');
 		expect(context.ref).toBe('refs/test-ref');
 		expect(context.sha).toBe('test-sha');
@@ -77,6 +81,7 @@ describe('generateContext', () => {
 			},
 		});
 		expect(context.eventName).toBe('override-event');
+		expect(context.action).toBe('test-action');
 		expect(context.payload.action).toBe('test-action');
 		expect(context.ref).toBe('override-ref');
 		expect(context.sha).toBe('override-sha');
