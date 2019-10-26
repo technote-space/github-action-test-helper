@@ -129,14 +129,29 @@ describe('spyOnStdout, stdoutCalledWith', () => {
 		process.stdout.write('test1' + EOL);
 		process.stdout.write('test2' + EOL);
 		console.log({
-			test1: 'test1',
-			test2: 'test2',
+			test3: 'test3',
+			test4: 'test4',
+		});
+		console.info({
+			test5: 'test5',
+			test6: 'test6',
+		});
+		console.error({
+			test7: 'test7',
+			test8: 'test8',
+		});
+		console.warn({
+			test9: 'test9',
+			test10: 'test10',
 		});
 
 		stdoutCalledWith(spy, [
 			'test1',
 			'test2',
-			'{\n\t"test1": "test1",\n\t"test2": "test2"\n}',
+			'{\n\t"test3": "test3",\n\t"test4": "test4"\n}',
+			'__info__{\n\t"test5": "test5",\n\t"test6": "test6"\n}',
+			'__error__{\n\t"test7": "test7",\n\t"test8": "test8"\n}',
+			'__warning__{\n\t"test9": "test9",\n\t"test10": "test10"\n}',
 		]);
 	});
 });
