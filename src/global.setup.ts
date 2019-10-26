@@ -7,9 +7,15 @@ export const setupGlobal = (): void => {
 		write: jest.fn(),
 	};
 	process.stdout.write = global.mockStdout.write;
-	console.log = jest.fn(value => process.stdout.write(JSON.stringify(value, null, '\t') + EOL));
-	console.error = jest.fn(value => process.stdout.write(JSON.stringify(value, null, '\t') + EOL));
-	console.debug = jest.fn(value => process.stdout.write(JSON.stringify(value, null, '\t') + EOL));
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	type converterType = (value: any) => boolean;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const converter = (prefix = ''): converterType => (value: any): boolean => process.stdout.write(prefix + JSON.stringify(value, null, '\t') + EOL);
+	console.log = jest.fn(converter());
+	console.info = jest.fn(converter('__info__'));
+	console.error = jest.fn(converter('__error__'));
+	console.warn = jest.fn(converter('__warning__'));
 
 	global.mockChildProcess = {
 		stdout: 'stdout',
