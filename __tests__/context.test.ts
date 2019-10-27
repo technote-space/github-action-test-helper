@@ -48,7 +48,7 @@ describe('generateContext', () => {
 			repo: 'test-repo',
 		});
 		expect(context.eventName).toBe('test-event');
-		expect(context.action).toBe('test-action');
+		expect(context.action).toBe('test-owner-generator');
 		expect(context.payload.action).toBe('test-action');
 		expect(context.ref).toBe('refs/test-ref');
 		expect(context.sha).toBe('test-sha');
@@ -81,7 +81,7 @@ describe('generateContext', () => {
 			},
 		});
 		expect(context.eventName).toBe('override-event');
-		expect(context.action).toBe('test-action');
+		expect(context.action).toBe('test-owner-generator');
 		expect(context.payload.action).toBe('test-action');
 		expect(context.ref).toBe('override-ref');
 		expect(context.sha).toBe('override-sha');
