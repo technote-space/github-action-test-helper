@@ -85,11 +85,8 @@ export const stdoutCalledWith = (spyOnMock: SpyInstance, messages: string[]): vo
 		expect(spyOnMock.mock.calls[index][0]).toBe(message + EOL);
 	});
 };
-export const stdoutCalledAtLeastOnce = (spyOnMock: SpyInstance, messages: string[]): void => {
-	const calls = spyOnMock.mock.calls.map(value => value[0]);
-	messages.forEach(message => {
-		expect(calls.includes(message + EOL)).toBe(true);
-	});
+export const stdoutContains = (spyOnMock: SpyInstance, messages: string[]): void => {
+	expect(spyOnMock.mock.calls.map(value => value[0].trim())).toEqual(expect.arrayContaining(messages));
 };
 
 export const spyOnExec = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
@@ -110,11 +107,8 @@ export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[]
 		}
 	});
 };
-export const execCalledAtLeastOnce = (spyOnMock: SpyInstance, messages: string[]): void => {
-	const calls = spyOnMock.mock.calls.map(value => value[0]);
-	messages.forEach(message => {
-		expect(calls.includes(message)).toBe(true);
-	});
+export const execContains = (spyOnMock: SpyInstance, messages: string[]): void => {
+	expect(spyOnMock.mock.calls.map(value => value[0])).toEqual(expect.arrayContaining(messages));
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
