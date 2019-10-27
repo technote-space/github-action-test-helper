@@ -9,10 +9,10 @@ import {
 	testFs,
 	spyOnStdout,
 	stdoutCalledWith,
-	stdoutCalledAtLeastOnce,
+	stdoutContains,
 	spyOnExec,
 	execCalledWith,
-	execCalledAtLeastOnce,
+	execContains,
 	testProperties,
 } from '../src';
 import global from '../src/global';
@@ -156,10 +156,14 @@ describe('spyOnStdout, stdoutCalledWith, stdoutCalledAtLeastOnce', () => {
 			'__warning__{\n\t"test9": "test9",\n\t"test10": "test10"\n}',
 		]);
 
-		stdoutCalledAtLeastOnce(spy, [
+		stdoutContains(spy, [
 			'test2',
 			'__error__{\n\t"test7": "test7",\n\t"test8": "test8"\n}',
 		]);
+
+		expect(() => stdoutContains(spy, [
+			'test3',
+		])).toThrow();
 	});
 });
 
@@ -178,9 +182,14 @@ describe('spyOnExec, execCalledWith, execCalledAtLeastOnce', () => {
 			['test3', {cwd: '.work'}],
 		]);
 
-		execCalledAtLeastOnce(spy, [
+		execContains(spy, [
 			'test2',
+			'test3',
 		]);
+
+		expect(() => execContains(spy, [
+			'test4',
+		])).toThrow();
 	});
 });
 
