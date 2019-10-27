@@ -9,8 +9,10 @@ import {
 	testFs,
 	spyOnStdout,
 	stdoutCalledWith,
+	stdoutCalledAtLeastOnce,
 	spyOnExec,
 	execCalledWith,
+	execCalledAtLeastOnce,
 	testProperties,
 } from '../src';
 import global from '../src/global';
@@ -122,7 +124,7 @@ describe('testFs', () => {
 	});
 });
 
-describe('spyOnStdout, stdoutCalledWith', () => {
+describe('spyOnStdout, stdoutCalledWith, stdoutCalledAtLeastOnce', () => {
 	it('should spy on stdout', () => {
 		const spy = spyOnStdout();
 
@@ -153,10 +155,15 @@ describe('spyOnStdout, stdoutCalledWith', () => {
 			'__error__{\n\t"test7": "test7",\n\t"test8": "test8"\n}',
 			'__warning__{\n\t"test9": "test9",\n\t"test10": "test10"\n}',
 		]);
+
+		stdoutCalledAtLeastOnce(spy, [
+			'test2',
+			'__error__{\n\t"test7": "test7",\n\t"test8": "test8"\n}',
+		]);
 	});
 });
 
-describe('spyOnExec, execCalledWith', () => {
+describe('spyOnExec, execCalledWith, execCalledAtLeastOnce', () => {
 	it('should spy on stdout', () => {
 		const spy = spyOnExec();
 		const callback = jest.fn();
@@ -169,6 +176,10 @@ describe('spyOnExec, execCalledWith', () => {
 			'test1',
 			'test2',
 			['test3', {cwd: '.work'}],
+		]);
+
+		execCalledAtLeastOnce(spy, [
+			'test2',
 		]);
 	});
 });
