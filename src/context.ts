@@ -30,7 +30,7 @@ export const generateContext = (settings: { event?: string; action?: string; ref
 			eventName: settings.event ? settings.event : '',
 			ref: settings.ref ? `refs/${settings.ref}` : '',
 			sha: settings.sha ? settings.sha : '',
-			action: settings.action ? settings.action : '',
+			action: settings.owner ? (settings.owner + '-generator') : '',
 		}, overrideObj, {
 			payload: Object.assign({
 				action: settings.action ? settings.action : '',
