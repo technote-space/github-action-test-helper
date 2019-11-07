@@ -21,7 +21,7 @@ export const testChildProcess = (): void => {
 	afterEach(() => {
 		global.mockChildProcess.stdout = 'stdout';
 		global.mockChildProcess.stderr = '';
-		global.mockChildProcess.error = null;
+		global.mockChildProcess.error  = null;
 	});
 };
 
@@ -38,11 +38,16 @@ export const setChildProcessParams = (params: { stdout?: string; stderr?: string
 };
 
 export const testFs = (defaultExists = false): (boolean) => void => {
-	let existsData: boolean[] = [defaultExists];
+	let existsData: boolean[]                         = [defaultExists];
 	let callback: ((PathLike) => boolean) | undefined = undefined;
-	let count = 0;
-	const spy: SpyInstance[] = [];
-	beforeEach(() => {
+	let count                                         = 0;
+	let stop                                          = false;
+	const spy: SpyInstance[]                          = [];
+
+	const setupMock = (): void => {
+		if (stop) {
+			return;
+		}
 		spy.push(jest.spyOn(fs, 'writeFileSync').mockImplementation(jest.fn()));
 		spy.push(jest.spyOn(fs, 'mkdirSync').mockImplementation(jest.fn()));
 		spy.push(jest.spyOn(fs, 'existsSync').mockImplementation((path: PathLike): boolean => {
@@ -55,20 +60,27 @@ export const testFs = (defaultExists = false): (boolean) => void => {
 			count++;
 			return result;
 		}));
-	});
-
-	afterEach(() => {
+	};
+	const clearMock = (): void => {
 		spy.forEach(spy => spy.mockRestore());
 		spy.length = 0;
-		callback = undefined;
+		callback   = undefined;
 		existsData = [defaultExists];
 		// eslint-disable-next-line no-magic-numbers
-		count = 0;
-	});
+		count      = 0;
+	};
 
-	return (flag: boolean | boolean[] | ((PathLike) => boolean)): void => {
+	beforeEach(setupMock);
+
+	afterEach(clearMock);
+
+	return (flag: boolean | boolean[] | ((PathLike) => boolean) | undefined): void => {
 		callback = undefined;
-		if (typeof flag === 'function') {
+		stop     = false;
+		if (undefined === flag) {
+			stop = true;
+			clearMock();
+		} else if (typeof flag === 'function') {
 			callback = flag;
 		} else if (typeof flag === 'boolean') {
 			existsData = [flag];
@@ -78,18 +90,18 @@ export const testFs = (defaultExists = false): (boolean) => void => {
 	};
 };
 
-export const spyOnStdout = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
+export const spyOnStdout      = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
 export const stdoutCalledWith = (spyOnMock: SpyInstance, messages: string[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);
 	messages.forEach((message, index) => {
 		expect(spyOnMock.mock.calls[index][0]).toBe(message + EOL);
 	});
 };
-export const stdoutContains = (spyOnMock: SpyInstance, messages: string[]): void => {
+export const stdoutContains   = (spyOnMock: SpyInstance, messages: string[]): void => {
 	expect(spyOnMock.mock.calls.map(value => value[0].trim())).toEqual(expect.arrayContaining(messages));
 };
 
-export const spyOnExec = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
+export const spyOnExec      = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);
@@ -107,7 +119,7 @@ export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[]
 		}
 	});
 };
-export const execContains = (spyOnMock: SpyInstance, messages: string[]): void => {
+export const execContains   = (spyOnMock: SpyInstance, messages: string[]): void => {
 	expect(spyOnMock.mock.calls.map(value => value[0])).toEqual(expect.arrayContaining(messages));
 };
 

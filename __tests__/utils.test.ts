@@ -2,6 +2,7 @@
 import { EOL } from 'os';
 import { exec } from 'child_process';
 import fs from 'fs';
+import path from 'path';
 import {
 	testEnv,
 	testChildProcess,
@@ -52,7 +53,7 @@ describe('testChildProcess, setChildProcessParams', () => {
 
 		expect(global.mockChildProcess.stdout).toBe('test-stdout');
 		expect(global.mockChildProcess.stderr).toBe('test-stderr');
-		expect(global.mockChildProcess.error).not.toBeFalsy();
+		expect(global.mockChildProcess.error).not.toBe(false);
 	});
 
 	it('should be reset env', () => {
@@ -79,30 +80,30 @@ describe('testFs', () => {
 		const func = testFs();
 
 		it('should return false 1', () => {
-			expect(fs.existsSync('')).toBeFalsy();
+			expect(fs.existsSync('')).toBe(false);
 		});
 
 		it('should return true', () => {
 			func(true);
-			expect(fs.existsSync('')).toBeTruthy();
+			expect(fs.existsSync('')).toBe(true);
 		});
 
 		it('should return false 2', () => {
-			expect(fs.existsSync('')).toBeFalsy();
+			expect(fs.existsSync('')).toBe(false);
 		});
 
 		it('should return different each time', () => {
 			func([true, false, true]);
-			expect(fs.existsSync('')).toBeTruthy();
-			expect(fs.existsSync('')).toBeFalsy();
-			expect(fs.existsSync('')).toBeTruthy();
-			expect(fs.existsSync('')).toBeTruthy();
+			expect(fs.existsSync('')).toBe(true);
+			expect(fs.existsSync('')).toBe(false);
+			expect(fs.existsSync('')).toBe(true);
+			expect(fs.existsSync('')).toBe(true);
 		});
 
 		it('should return result depends on file name', () => {
 			func((filepath: string): boolean => filepath.includes('test'));
-			expect(fs.existsSync('/tmp/test.txt')).toBeTruthy();
-			expect(fs.existsSync('/tmp/abc.txt')).toBeFalsy();
+			expect(fs.existsSync('/tmp/test.txt')).toBe(true);
+			expect(fs.existsSync('/tmp/abc.txt')).toBe(false);
 		});
 	});
 
@@ -110,16 +111,37 @@ describe('testFs', () => {
 		const func = testFs(true);
 
 		it('should return true 1', () => {
-			expect(fs.existsSync('')).toBeTruthy();
+			expect(fs.existsSync('')).toBe(true);
 		});
 
 		it('should return false', () => {
 			func(false);
-			expect(fs.existsSync('')).toBeFalsy();
+			expect(fs.existsSync('')).toBe(false);
 		});
 
 		it('should return true 2', () => {
-			expect(fs.existsSync('')).toBeTruthy();
+			expect(fs.existsSync('')).toBe(true);
+		});
+	});
+
+	describe('stop mock', () => {
+		const func = testFs();
+
+		it('should return false 1', () => {
+			expect(fs.existsSync(path.resolve(__dirname, 'fixtures', 'config.yml'))).toBe(false);
+		});
+
+		it('should return true 1', () => {
+			func(undefined);
+			expect(fs.existsSync(path.resolve(__dirname, 'fixtures', 'config.yml'))).toBe(true);
+		});
+
+		it('should return true 2', () => {
+			expect(fs.existsSync(path.resolve(__dirname, 'fixtures', 'config.yml'))).toBe(true);
+		});
+
+		it('should return false 2', () => {
+			expect(fs.existsSync(path.resolve(__dirname, 'fixtures', 'config-test.yml'))).toBe(false);
 		});
 	});
 });
@@ -169,7 +191,7 @@ describe('spyOnStdout, stdoutCalledWith, stdoutCalledAtLeastOnce', () => {
 
 describe('spyOnExec, execCalledWith, execCalledAtLeastOnce', () => {
 	it('should spy on stdout', () => {
-		const spy = spyOnExec();
+		const spy      = spyOnExec();
 		const callback = jest.fn();
 
 		exec('test1', callback);
