@@ -25,14 +25,14 @@ export const testChildProcess = (): void => {
 	});
 };
 
-export const setChildProcessParams = (params: { stdout?: string; stderr?: string; error?: Error }): void => {
-	if (typeof params.stdout === 'string') {
+export const setChildProcessParams = (params: { stdout?: string | ((command: string) => string); stderr?: string | ((command: string) => string); error?: Error | ((command: string) => Error) }): void => {
+	if (typeof params.stdout === 'string' || typeof params.stdout === 'function') {
 		global.mockChildProcess.stdout = params.stdout;
 	}
-	if (typeof params.stderr === 'string') {
+	if (typeof params.stderr === 'string' || typeof params.stderr === 'function') {
 		global.mockChildProcess.stderr = params.stderr;
 	}
-	if (params.error instanceof Error) {
+	if (params.error instanceof Error || typeof params.error === 'function') {
 		global.mockChildProcess.error = params.error;
 	}
 };

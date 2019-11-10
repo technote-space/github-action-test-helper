@@ -73,6 +73,37 @@ describe('testChildProcess, setChildProcessParams', () => {
 		expect(global.mockChildProcess.stderr).toBe('');
 		expect(global.mockChildProcess.error).toBe(null);
 	});
+
+	it('should set mock params function', () => {
+		const spy      = spyOnExec();
+		const callback = jest.fn();
+		expect(global.mockChildProcess.stdout).toBe('stdout');
+		expect(global.mockChildProcess.stderr).toBe('');
+		expect(global.mockChildProcess.error).toBe(null);
+
+		setChildProcessParams({
+			stdout: (command: string): string => command === 'test1' ? 'stdout1' : 'stdout2',
+			stderr: (command: string): string => command === 'test1' ? 'stderr1' : 'stderr2',
+			error: (command: string): Error => command === 'test1' ? new Error('err1') : new Error('err2'),
+		});
+
+		exec('test1', callback);
+		exec('test2', callback);
+
+		execCalledWith(spy, [
+			'test1',
+			'test2',
+		]);
+		expect(callback).toBeCalledTimes(2);
+		expect(callback.mock.calls[0]).toHaveLength(3);
+		expect(callback.mock.calls[0][0]).toEqual(new Error('err1'));
+		expect(callback.mock.calls[0][1]).toBe('stdout1');
+		expect(callback.mock.calls[0][2]).toBe('stderr1');
+		expect(callback.mock.calls[1]).toHaveLength(3);
+		expect(callback.mock.calls[1][0]).toEqual(new Error('err2'));
+		expect(callback.mock.calls[1][1]).toBe('stdout2');
+		expect(callback.mock.calls[1][2]).toBe('stderr2');
+	});
 });
 
 describe('testFs', () => {
