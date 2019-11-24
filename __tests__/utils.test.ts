@@ -15,6 +15,7 @@ import {
 	execCalledWith,
 	execContains,
 	testProperties,
+	setActionEnv,
 } from '../src';
 import global from '../src/global';
 
@@ -283,5 +284,42 @@ describe('testProperties', () => {
 				test4: {a: 'c'},
 			});
 		}).toThrow();
+	});
+});
+
+describe('setActionEnv', () => {
+	testEnv();
+
+	it('should set action env', () => {
+		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV1');
+		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV2');
+		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV3');
+
+		expect(setActionEnv(path.resolve(__dirname, 'fixtures/test1'))).toEqual([
+			{
+				key: 'INPUT_TEST_ENV1',
+				value: 'test1',
+			},
+			{
+				key: 'INPUT_TEST_ENV2',
+				value: 'test2',
+			},
+			{
+				key: 'INPUT_TEST_ENV3',
+				value: 'test3',
+			},
+		]);
+
+		expect(process.env).toHaveProperty('INPUT_TEST_ENV1');
+		expect(process.env.INPUT_TEST_ENV1).toBe('test1');
+		expect(process.env).toHaveProperty('INPUT_TEST_ENV2');
+		expect(process.env.INPUT_TEST_ENV2).toBe('test2');
+		expect(process.env).toHaveProperty('INPUT_TEST_ENV3');
+		expect(process.env.INPUT_TEST_ENV3).toBe('test3');
+		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV4');
+	});
+
+	it('should not set action env', () => {
+		expect(setActionEnv(path.resolve(__dirname, 'fixtures/test2'))).toEqual([]);
 	});
 });

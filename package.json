@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Test helper for GitHub Action.",
   "author": "Technote <technote.space@gmail.com> (https://technote.space)",
   "license": "MIT",
@@ -22,7 +22,8 @@
     "dist"
   ],
   "dependencies": {
-    "@actions/github": "^1.1.0"
+    "@actions/github": "^1.1.0",
+    "js-yaml": "^3.13.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
