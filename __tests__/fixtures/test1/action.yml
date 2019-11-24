@@ -1,0 +1,27 @@
+name: Test
+description: Test action
+author: technote-space
+inputs:
+  GITHUB_TOKEN:
+    description: Secret GitHub API token to use for making API requests.
+    required: true
+
+  TEST_ENV1:
+    description: test1
+    default: 'test1'
+  TEST_ENV2:
+    description: test2
+    default: test2
+  TEST_ENV3:
+    description: test3
+    required: true
+    default: test3
+  TEST_ENV4:
+    description: test4
+    required: true
+branding:
+  icon: 'book-open'
+  color: 'blue'
+runs:
+  using: node12
+  main: lib/main.js
