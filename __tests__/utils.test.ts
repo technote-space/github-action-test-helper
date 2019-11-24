@@ -41,6 +41,20 @@ describe('testEnv', () => {
 	});
 });
 
+describe('testEnv', () => {
+	testEnv(path.resolve(__dirname, 'fixtures/test1'));
+
+	it('should set action env', () => {
+		expect(process.env).toHaveProperty('INPUT_TEST_ENV1');
+		expect(process.env.INPUT_TEST_ENV1).toBe('test1');
+		expect(process.env).toHaveProperty('INPUT_TEST_ENV2');
+		expect(process.env.INPUT_TEST_ENV2).toBe('test2');
+		expect(process.env).toHaveProperty('INPUT_TEST_ENV3');
+		expect(process.env.INPUT_TEST_ENV3).toBe('test3');
+		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV4');
+	});
+});
+
 describe('testChildProcess, setChildProcessParams', () => {
 	testChildProcess();
 

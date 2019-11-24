@@ -5,13 +5,29 @@ import fs, { PathLike } from 'fs';
 import yaml from 'js-yaml';
 import SpyInstance = jest.SpyInstance;
 
-export const testEnv = (): void => {
+export const setActionEnv = (rootDir: string): object => {
+	const actionSetting = yaml.safeLoad(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) || {};
+	const inputs        = 'inputs' in actionSetting && typeof actionSetting['inputs'] === 'object' ? actionSetting['inputs'] : {};
+	const envs          = Object.keys(inputs).filter(key => 'default' in inputs[key]).map(key => ({
+		key: `INPUT_${key}`,
+		value: inputs[key].default,
+	}));
+	envs.forEach(env => {
+		process.env[env.key] = env.value;
+	});
+	return envs;
+};
+
+export const testEnv = (rootDir?: string): void => {
 	const OLD_ENV = process.env;
 
 	beforeEach(() => {
 		jest.resetModules();
 		process.env = {...OLD_ENV};
 		delete process.env.NODE_ENV;
+		if (rootDir) {
+			setActionEnv(rootDir);
+		}
 	});
 
 	afterEach(() => {
@@ -136,17 +152,4 @@ export const testProperties = (object: any, checks: { [key: string]: any }): voi
 			expect(object[key]).toBe(checks[key]);
 		}
 	});
-};
-
-export const setActionEnv = (rootDir: string): object => {
-	const actionSetting = yaml.safeLoad(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) || {};
-	const inputs        = 'inputs' in actionSetting && typeof actionSetting['inputs'] === 'object' ? actionSetting['inputs'] : {};
-	const envs          = Object.keys(inputs).filter(key => 'default' in inputs[key]).map(key => ({
-		key: `INPUT_${key}`,
-		value: inputs[key].default,
-	}));
-	envs.forEach(env => {
-		process.env[env.key] = env.value;
-	});
-	return envs;
 };
