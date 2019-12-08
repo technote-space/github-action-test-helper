@@ -10,7 +10,7 @@ export const setActionEnv = (rootDir: string): object => {
 	const inputs        = 'inputs' in actionSetting && typeof actionSetting['inputs'] === 'object' ? actionSetting['inputs'] : {};
 	const envs          = Object.keys(inputs).filter(key => 'default' in inputs[key]).map(key => ({
 		key: `INPUT_${key}`,
-		value: inputs[key].default,
+		value: `${inputs[key].default}`,
 	}));
 	envs.forEach(env => {
 		process.env[env.key] = env.value;
