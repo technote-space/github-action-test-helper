@@ -22,7 +22,7 @@
     "dist"
   ],
   "dependencies": {
-    "@actions/github": "^2.0.0",
+    "@actions/github": "^2.0.1",
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
