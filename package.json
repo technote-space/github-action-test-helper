@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.0.28",
+  "version": "0.1.0",
   "description": "Test helper for GitHub Action.",
   "author": "Technote <technote.space@gmail.com> (https://technote.space)",
   "license": "MIT",
@@ -26,15 +26,15 @@
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.25",
-    "@types/node": "^13.1.6",
-    "@typescript-eslint/eslint-plugin": "^2.15.0",
-    "@typescript-eslint/parser": "^2.15.0",
+    "@types/jest": "^24.9.0",
+    "@types/node": "^13.1.7",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
     "eslint": "^6.8.0",
     "jest": "^24.9.0",
     "jest-circus": "^24.9.0",
     "ts-jest": "^24.3.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "publishConfig": {
     "access": "public"
