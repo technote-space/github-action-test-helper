@@ -308,6 +308,7 @@ describe('setActionEnv', () => {
 		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV1');
 		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV2');
 		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV3');
+		expect(process.env).not.toHaveProperty('INPUT_TEST-ENV5');
 
 		expect(setActionEnv(path.resolve(__dirname, 'fixtures/test1'))).toEqual([
 			{
@@ -322,6 +323,10 @@ describe('setActionEnv', () => {
 				key: 'INPUT_TEST_ENV3',
 				value: 'test3',
 			},
+			{
+				key: 'INPUT_TEST-ENV5',
+				value: 'test5',
+			},
 		]);
 
 		expect(process.env).toHaveProperty('INPUT_TEST_ENV1');
@@ -331,6 +336,8 @@ describe('setActionEnv', () => {
 		expect(process.env).toHaveProperty('INPUT_TEST_ENV3');
 		expect(process.env.INPUT_TEST_ENV3).toBe('test3');
 		expect(process.env).not.toHaveProperty('INPUT_TEST_ENV4');
+		expect(process.env).toHaveProperty('INPUT_TEST-ENV5');
+		expect(process.env['INPUT_TEST-ENV5']).toBe('test5');
 	});
 
 	it('should not set action env', () => {

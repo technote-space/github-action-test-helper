@@ -8,9 +8,11 @@ inputs:
 
   TEST_ENV1:
     description: test1
+    required: true
     default: 'test1'
   TEST_ENV2:
     description: test2
+    required: false
     default: test2
   TEST_ENV3:
     description: test3
@@ -18,6 +20,10 @@ inputs:
     default: test3
   TEST_ENV4:
     description: test4
+    required: true
+  test-env5:
+    description: test5
+    default: test5
     required: true
 branding:
   icon: 'book-open'
