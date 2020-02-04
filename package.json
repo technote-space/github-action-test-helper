@@ -2,7 +2,11 @@
   "name": "@technote-space/github-action-test-helper",
   "version": "0.1.5",
   "description": "Test helper for GitHub Action.",
-  "author": "Technote <technote.space@gmail.com> (https://technote.space)",
+  "author": {
+    "name": "Technote",
+    "email": "technote.space@gmail.com",
+    "url": "https://technote.space"
+  },
   "license": "MIT",
   "keywords": [
     "github",
