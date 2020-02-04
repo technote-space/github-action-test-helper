@@ -1,5 +1,5 @@
 import { Context } from '@actions/github/lib/context';
-import { Response } from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 
 export const getContext = (override: object): Context => Object.assign({
 	payload: {
@@ -47,7 +47,7 @@ export const generateContext = (settings: { event?: string; action?: string; ref
 	);
 };
 
-type CreateResponseFunctionType = <T>(data: T, override?: object) => Response<T>;
+type CreateResponseFunctionType = <T>(data: T, override?: object) => Octokit.Response<T>;
 export const createResponse: CreateResponseFunctionType = (data, override = {}) => Object.assign({
 	data,
 	status: 0,
