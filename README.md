@@ -10,13 +10,17 @@ Test helper for GitHub Actions.
 
 *Read this in other languages: [English](README.md), [日本語](README.ja.md).*
 
+## Table of Contents
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+<details>
+<summary>Details</summary>
 
 - [Usage](#usage)
 - [Author](#author)
 
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Usage
@@ -41,6 +45,7 @@ import {
 	execCalledWith,
 	testProperties,
 	setupGlobal,
+	getOctokit,
 } from '@technote-space/github-action-test-helper';
 import nock from 'nock';
 
@@ -60,6 +65,7 @@ const execSpy = spyOnExec();
 execCalledWith(execSpy, []);
 testProperties({}, {});
 setupGlobal();
+getOctokit();
 ```
 
 ## Author
