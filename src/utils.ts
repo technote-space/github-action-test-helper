@@ -3,6 +3,7 @@ import { EOL } from 'os';
 import path from 'path';
 import fs, { PathLike } from 'fs';
 import yaml from 'js-yaml';
+import { Octokit } from '@octokit/rest';
 import SpyInstance = jest.SpyInstance;
 
 export const setActionEnv = (rootDir: string): object => {
@@ -153,3 +154,5 @@ export const testProperties = (object: any, checks: { [key: string]: any }): voi
 		}
 	});
 };
+
+export const getOctokit = (token?: string): Octokit => new Octokit({auth: `token ${token ?? 'test-token'}`, log: {warn: jest.fn()}});

@@ -41,6 +41,7 @@ import {
 	execCalledWith,
 	testProperties,
 	setupGlobal,
+	getOctokit,
 } from '@technote-space/github-action-test-helper';
 import nock from 'nock';
 
@@ -60,6 +61,7 @@ const execSpy = spyOnExec();
 execCalledWith(execSpy, []);
 testProperties({}, {});
 setupGlobal();
+getOctokit();
 ```
 
 ## Author
