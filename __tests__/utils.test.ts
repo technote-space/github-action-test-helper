@@ -16,6 +16,7 @@ import {
 	execContains,
 	testProperties,
 	setActionEnv,
+	getOctokit,
 } from '../src';
 import global from '../src/global';
 
@@ -342,5 +343,12 @@ describe('setActionEnv', () => {
 
 	it('should not set action env', () => {
 		expect(setActionEnv(path.resolve(__dirname, 'fixtures/test2'))).toEqual([]);
+	});
+});
+
+describe('getOctokit', () => {
+	it('should return octokit', () => {
+		expect(() => getOctokit()).not.toThrow();
+		expect(() => getOctokit('token')).not.toThrow();
 	});
 });
