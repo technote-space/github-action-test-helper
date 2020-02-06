@@ -28,7 +28,7 @@ export const generateContext = (settings: { event?: string; action?: string; ref
 	return getContext(
 		Object.assign({}, {
 			eventName: settings.event ? settings.event : '',
-			ref: settings.ref ? `refs/${settings.ref}` : '',
+			ref: settings.ref ? settings.ref : '',
 			sha: settings.sha ? settings.sha : '',
 			action: settings.owner ? (settings.owner + '-generator') : '',
 		}, overrideObj, {

@@ -42,7 +42,7 @@ describe('generateContext', () => {
 		const context = generateContext({
 			event: 'test-event',
 			action: 'test-action',
-			ref: 'test-ref',
+			ref: 'refs/heads/test-ref',
 			sha: 'test-sha',
 			owner: 'test-owner',
 			repo: 'test-repo',
@@ -50,7 +50,7 @@ describe('generateContext', () => {
 		expect(context.eventName).toBe('test-event');
 		expect(context.action).toBe('test-owner-generator');
 		expect(context.payload.action).toBe('test-action');
-		expect(context.ref).toBe('refs/test-ref');
+		expect(context.ref).toBe('refs/heads/test-ref');
 		expect(context.sha).toBe('test-sha');
 		expect(context.issue.owner).toBe('test-owner');
 		expect(context.repo.owner).toBe('test-owner');
@@ -62,7 +62,7 @@ describe('generateContext', () => {
 		const context = generateContext({
 			event: 'test-event',
 			action: 'test-action',
-			ref: 'test-ref',
+			ref: 'refs/heads/test-ref',
 			sha: 'test-sha',
 			owner: 'test-owner',
 			repo: 'test-repo',
