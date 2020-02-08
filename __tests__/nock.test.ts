@@ -28,6 +28,22 @@ describe('getApiFixture', () => {
 		expect(data).toHaveProperty('test');
 		expect(data['test']).toBe(123);
 	});
+
+	it('should get api fixture (yaml)', () => {
+		const data = getApiFixture(path.resolve(__dirname, 'fixtures'), 'api.test', '.yml');
+		expect(data).toHaveProperty('test');
+		expect(data['test']).toBe(123);
+	});
+
+	it('should get api fixture (invalid yaml)', () => {
+		const data = getApiFixture(path.resolve(__dirname, 'fixtures'), 'empty.test', '.yml');
+		expect(data).not.toHaveProperty('test');
+	});
+
+	it('should get api fixture (others)', () => {
+		const data = getApiFixture(path.resolve(__dirname, 'fixtures'), 'api.test', '.txt');
+		expect(data).toHaveProperty('content');
+	});
 });
 
 describe('disableNetConnect', () => {
