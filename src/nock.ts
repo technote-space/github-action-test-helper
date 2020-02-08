@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import yaml from 'js-yaml';
 
 export const encodeContent = (content: string): string => Buffer.from(content).toString('base64');
 
@@ -29,7 +30,18 @@ export const getConfigFixture = (rootDir: string, fileName = 'config.yml'): obje
 	},
 });
 
-export const getApiFixture = (rootDir: string, name: string): object => JSON.parse(fs.readFileSync(path.resolve(rootDir, `${name}.json`)).toString());
+export const getApiFixture = (rootDir: string, name: string, ext = '.json'): object => {
+	const content = fs.readFileSync(path.resolve(rootDir, `${name}${ext}`)).toString();
+	switch (ext.toLowerCase()) {
+		case '.json':
+			return JSON.parse(content);
+		case '.yml':
+		case '.yaml':
+			return yaml.safeLoad(content) || {};
+		default:
+			return {content};
+	}
+};
 
 export const disableNetConnect = (nock): void => {
 	beforeEach(() => {
