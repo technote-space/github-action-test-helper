@@ -109,20 +109,23 @@ export const testFs = (defaultExists = false): (boolean) => void => {
 	};
 };
 
-export const spyOnStdout      = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
-export const stdoutCalledWith = (spyOnMock: SpyInstance, messages: string[]): void => {
+export const spyOnStdout       = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
+export const stdoutCalledWith  = (spyOnMock: SpyInstance, messages: string[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);
 	messages.forEach((message, index) => {
 		expect(spyOnMock.mock.calls[index][0]).toBe(message + EOL);
 	});
 };
-export const stdoutContains   = (spyOnMock: SpyInstance, messages: string[]): void => {
+export const stdoutContains    = (spyOnMock: SpyInstance, messages: string[]): void => {
 	expect(spyOnMock.mock.calls.map(value => value[0].trim())).toEqual(expect.arrayContaining(messages));
 };
+export const stdoutNotContains = (spyOnMock: SpyInstance, messages: string[]): void => {
+	expect(spyOnMock.mock.calls.map(value => value[0].trim())).toEqual(expect.not.arrayContaining(messages));
+};
 
-export const spyOnExec      = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
+export const spyOnExec       = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
+export const execCalledWith  = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);
 	messages.forEach((message, index) => {
 		if (typeof message === 'string') {
@@ -138,9 +141,15 @@ export const execCalledWith = (spyOnMock: SpyInstance, messages: (string | any[]
 		}
 	});
 };
-export const execContains   = (spyOnMock: SpyInstance, messages: string[]): void => {
+export const execContains    = (spyOnMock: SpyInstance, messages: string[]): void => {
 	expect(spyOnMock.mock.calls.map(value => value[0])).toEqual(expect.arrayContaining(messages));
 };
+export const execNotContains = (spyOnMock: SpyInstance, messages: string[]): void => {
+	expect(spyOnMock.mock.calls.map(value => value[0])).toEqual(expect.not.arrayContaining(messages));
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getLogStdout = (value: any, prefix = ''): string => prefix + JSON.stringify(value, null, '\t');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const testProperties = (object: any, checks: { [key: string]: any }): void => {
