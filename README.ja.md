@@ -41,8 +41,12 @@ import {
 	testFs,
 	spyOnStdout,
 	stdoutCalledWith,
+	stdoutContains,
+	stdoutNotContains,
 	spyOnExec,
 	execCalledWith,
+	execContains,
+	execNotContains,
 	testProperties,
 	setupGlobal,
 	getOctokit,
@@ -61,8 +65,12 @@ setChildProcessParams({stdout: 'test-stdout', stderr: 'test-stderr', error: new 
 testFs();
 const stdoutSpy = spyOnStdout();
 stdoutCalledWith(stdoutSpy, []);
+stdoutContains(stdoutSpy, []);
+stdoutNotContains(stdoutSpy, []);
 const execSpy = spyOnExec();
 execCalledWith(execSpy, []);
+execContains(execSpy, []);
+execNotContains(execSpy, []);
 testProperties({}, {});
 setupGlobal();
 getOctokit();

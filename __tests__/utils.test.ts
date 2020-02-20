@@ -11,12 +11,15 @@ import {
 	spyOnStdout,
 	stdoutCalledWith,
 	stdoutContains,
+	stdoutNotContains,
 	spyOnExec,
 	execCalledWith,
 	execContains,
+	execNotContains,
 	testProperties,
 	setActionEnv,
 	getOctokit,
+	getLogStdout,
 } from '../src';
 import global from '../src/global';
 
@@ -193,7 +196,7 @@ describe('testFs', () => {
 	});
 });
 
-describe('spyOnStdout, stdoutCalledWith, stdoutCalledAtLeastOnce', () => {
+describe('spyOnStdout, stdoutCalledWith, stdoutContains, stdoutNotContains, getLogStdout', () => {
 	it('should spy on stdout', () => {
 		const spy = spyOnStdout();
 
@@ -219,24 +222,48 @@ describe('spyOnStdout, stdoutCalledWith, stdoutCalledAtLeastOnce', () => {
 		stdoutCalledWith(spy, [
 			'test1',
 			'test2',
-			'{\n\t"test3": "test3",\n\t"test4": "test4"\n}',
-			'__info__{\n\t"test5": "test5",\n\t"test6": "test6"\n}',
-			'__error__{\n\t"test7": "test7",\n\t"test8": "test8"\n}',
-			'__warning__{\n\t"test9": "test9",\n\t"test10": "test10"\n}',
+			getLogStdout({
+				test3: 'test3',
+				test4: 'test4',
+			}),
+			getLogStdout({
+				test5: 'test5',
+				test6: 'test6',
+			}, '__info__'),
+			getLogStdout({
+				test7: 'test7',
+				test8: 'test8',
+			}, '__error__'),
+			getLogStdout({
+				test9: 'test9',
+				test10: 'test10',
+			}, '__warning__'),
 		]);
 
 		stdoutContains(spy, [
 			'test2',
-			'__error__{\n\t"test7": "test7",\n\t"test8": "test8"\n}',
+			getLogStdout({
+				test7: 'test7',
+				test8: 'test8',
+			}, '__error__'),
 		]);
 
 		expect(() => stdoutContains(spy, [
 			'test3',
 		])).toThrow();
+
+		stdoutNotContains(spy, [
+			'test3',
+		]);
+
+		expect(() => stdoutNotContains(spy, [
+			'test1',
+			'test2',
+		])).toThrow();
 	});
 });
 
-describe('spyOnExec, execCalledWith, execCalledAtLeastOnce', () => {
+describe('spyOnExec, execCalledWith, execContains, execNotContains', () => {
 	it('should spy on stdout', () => {
 		const spy      = spyOnExec();
 		const callback = jest.fn();
@@ -258,6 +285,15 @@ describe('spyOnExec, execCalledWith, execCalledAtLeastOnce', () => {
 
 		expect(() => execContains(spy, [
 			'test4',
+		])).toThrow();
+
+		execNotContains(spy, [
+			'test4',
+		]);
+
+		expect(() => execNotContains(spy, [
+			'test2',
+			'test3',
 		])).toThrow();
 	});
 });
