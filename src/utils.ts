@@ -44,7 +44,7 @@ export const testChildProcess = (): void => {
 	});
 };
 
-export const setChildProcessParams = (params: { stdout?: string | ((command: string) => string); stderr?: string | ((command: string) => string); error?: Error | ((command: string) => Error) }): void => {
+export const setChildProcessParams = (params: { stdout?: string | ((command: string) => string); stderr?: string | ((command: string) => string); error?: Error | ((command: string) => Error | null) }): void => {
 	if (typeof params.stdout === 'string' || typeof params.stdout === 'function') {
 		global.mockChildProcess.stdout = params.stdout;
 	}
@@ -124,6 +124,7 @@ export const stdoutNotContains = (spyOnMock: SpyInstance, messages: string[]): v
 };
 
 export const spyOnExec       = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
+export const spyOnSpawn      = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'spawn');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const execCalledWith  = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
 	expect(spyOnMock).toBeCalledTimes(messages.length);

@@ -6,9 +6,10 @@ interface Global extends NodeJS.Global {
 	};
 	mockChildProcess: {
 		exec: jest.Mock;
+		spawn: jest.Mock;
 		stdout: string | ((command: string) => string);
 		stderr: string | ((command: string) => string);
-		error: ExecException | null | ((command: string) => ExecException);
+		error: ExecException | null | ((command: string) => ExecException | null);
 	};
 }
 
