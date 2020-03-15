@@ -47,8 +47,13 @@ export const setupGlobal = (): void => {
 				},
 			},
 			on: (event, callback): void => {
-				if (event === 'close') {
-					callback((typeof global.mockChildProcess.error === 'function' ? global.mockChildProcess.error(args[0]) : global.mockChildProcess.error) ?? 0);
+				if (event === 'error') {
+					const error = typeof global.mockChildProcess.error === 'function' ? global.mockChildProcess.error(args[0]) : global.mockChildProcess.error;
+					if (error) {
+						callback(error);
+					}
+				} else if (event === 'close') {
+					callback();
 				}
 			},
 		})),
