@@ -30,10 +30,33 @@ export const setupGlobal = (): void => {
 				typeof global.mockChildProcess.stderr === 'function' ? global.mockChildProcess.stderr(args[0]) : global.mockChildProcess.stderr,
 			);
 		}),
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		spawn: jest.fn((...args: any[]) => ({
+			stdout: {
+				on: (event, callback): void => {
+					if (event === 'data') {
+						callback(typeof global.mockChildProcess.stdout === 'function' ? global.mockChildProcess.stdout(args[0]) : global.mockChildProcess.stdout);
+					}
+				},
+			},
+			stderr: {
+				on: (event, callback): void => {
+					if (event === 'data') {
+						callback(typeof global.mockChildProcess.stderr === 'function' ? global.mockChildProcess.stderr(args[0]) : global.mockChildProcess.stderr);
+					}
+				},
+			},
+			on: (event, callback): void => {
+				if (event === 'close') {
+					callback((typeof global.mockChildProcess.error === 'function' ? global.mockChildProcess.error(args[0]) : global.mockChildProcess.error) ?? 0);
+				}
+			},
+		})),
 	};
 	jest.mock('child_process', () => ({
 		...jest.requireActual('child_process'),
 		exec: global.mockChildProcess.exec,
+		spawn: global.mockChildProcess.spawn,
 	}));
 
 	process.env.GITHUB_ACTOR = 'octocat';
