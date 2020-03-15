@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import { EOL } from 'os';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import {
@@ -13,6 +13,7 @@ import {
 	stdoutContains,
 	stdoutNotContains,
 	spyOnExec,
+	spyOnSpawn,
 	execCalledWith,
 	execContains,
 	execNotContains,
@@ -93,7 +94,7 @@ describe('testChildProcess, setChildProcessParams', () => {
 		expect(global.mockChildProcess.error).toBe(null);
 	});
 
-	it('should set mock params function', () => {
+	it('should set mock params function 1', () => {
 		const spy      = spyOnExec();
 		const callback = jest.fn();
 		expect(global.mockChildProcess.stdout).toBe('stdout');
@@ -122,6 +123,51 @@ describe('testChildProcess, setChildProcessParams', () => {
 		expect(callback.mock.calls[1][0]).toEqual(new Error('err2'));
 		expect(callback.mock.calls[1][1]).toBe('stdout2');
 		expect(callback.mock.calls[1][2]).toBe('stderr2');
+	});
+
+	it('should set mock params function 2', async() => {
+		const spy         = spyOnSpawn();
+		const execCommand = (command: string, cwd?: string): Promise<{ stdout: string; stderr: string }> => {
+			return new Promise((resolve, reject) => {
+				const process = spawn(command, [], {shell: true, cwd});
+				let stdout    = '';
+				let stderr    = '';
+				process.stdout.on('data', (data) => {
+					console.log(data.toString());
+					stdout += data.toString();
+				});
+
+				process.stderr.on('data', (data) => {
+					console.error(data.toString());
+					stderr += data.toString();
+				});
+
+				process.on('close', (code) => {
+					// eslint-disable-next-line no-magic-numbers
+					if (code !== 0) {
+						reject(new Error(code ? code.toString() : undefined));
+					}
+					resolve({stdout, stderr});
+				});
+			});
+		};
+
+		setChildProcessParams({
+			stdout: (command: string): string => command === 'test1' ? 'stdout1' : 'stdout2',
+			stderr: (command: string): string => command === 'test1' ? 'stderr1' : 'stderr2',
+			error: (command: string): Error | null => command === 'test1' ? null : new Error('err2'),
+		});
+
+		const {stdout, stderr} = await execCommand('test1');
+		expect(stdout).toBe('stdout1');
+		expect(stderr).toBe('stderr1');
+
+		await expect(execCommand('test2')).rejects.toThrow('err2');
+
+		execCalledWith(spy, [
+			'test1',
+			'test2',
+		]);
 	});
 });
 
@@ -263,8 +309,8 @@ describe('spyOnStdout, stdoutCalledWith, stdoutContains, stdoutNotContains, getL
 	});
 });
 
-describe('spyOnExec, execCalledWith, execContains, execNotContains', () => {
-	it('should spy on stdout', () => {
+describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains', () => {
+	it('should spy on stdout 1', () => {
 		const spy      = spyOnExec();
 		const callback = jest.fn();
 
@@ -294,6 +340,65 @@ describe('spyOnExec, execCalledWith, execContains, execNotContains', () => {
 		expect(() => execNotContains(spy, [
 			'test2',
 			'test3',
+		])).toThrow();
+	});
+
+	it('should spy on stdout 2', async() => {
+		const spy         = spyOnSpawn();
+		const execCommand = (command: string, cwd?: string): Promise<{ stdout: string; stderr: string }> => {
+			return new Promise((resolve) => {
+				const process = spawn(command, [], {shell: true, cwd});
+				let stdout    = '';
+				let stderr    = '';
+				process.stdout.on('data', (data) => {
+					console.log(data.toString());
+					stdout += data.toString();
+				});
+				process.stdout.on('pause', () => {
+					//
+				});
+
+				process.stderr.on('data', (data) => {
+					console.error(data.toString());
+					stderr += data.toString();
+				});
+				process.stderr.on('end', () => {
+					//
+				});
+
+				process.on('exit', () => {
+					//
+				});
+				process.on('close', () => {
+					resolve({stdout, stderr});
+				});
+			});
+		};
+
+		await execCommand('test1');
+		await execCommand('test2', '.work');
+
+		execCalledWith(spy, [
+			'test1',
+			['test2', [], {shell: true, cwd: '.work'}],
+		]);
+
+		execContains(spy, [
+			'test2',
+			'test2',
+		]);
+
+		expect(() => execContains(spy, [
+			'test3',
+		])).toThrow();
+
+		execNotContains(spy, [
+			'test3',
+		]);
+
+		expect(() => execNotContains(spy, [
+			'test1',
+			'test2',
 		])).toThrow();
 	});
 });
