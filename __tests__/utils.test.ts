@@ -142,11 +142,10 @@ describe('testChildProcess, setChildProcessParams', () => {
 					stderr += data.toString();
 				});
 
-				process.on('close', (code) => {
-					// eslint-disable-next-line no-magic-numbers
-					if (code !== 0) {
-						reject(new Error(code ? code.toString() : undefined));
-					}
+				process.on('error', (err) => {
+					reject(err);
+				});
+				process.on('close', () => {
 					resolve({stdout, stderr});
 				});
 			});
@@ -346,7 +345,7 @@ describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains',
 	it('should spy on stdout 2', async() => {
 		const spy         = spyOnSpawn();
 		const execCommand = (command: string, cwd?: string): Promise<{ stdout: string; stderr: string }> => {
-			return new Promise((resolve) => {
+			return new Promise((resolve, reject) => {
 				const process = spawn(command, [], {shell: true, cwd});
 				let stdout    = '';
 				let stderr    = '';
@@ -366,11 +365,14 @@ describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains',
 					//
 				});
 
-				process.on('exit', () => {
-					//
+				process.on('error', (err) => {
+					reject(err);
 				});
 				process.on('close', () => {
 					resolve({stdout, stderr});
+				});
+				process.on('exit', () => {
+					//
 				});
 			});
 		};
