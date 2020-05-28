@@ -1,3 +1,3 @@
-import { setupGlobal } from './src';
+import {setupGlobal} from './src';
 
 setupGlobal();
