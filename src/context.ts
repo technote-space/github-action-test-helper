@@ -1,7 +1,5 @@
 import {Context} from '@actions/github/lib/context';
-import {
-  OctokitResponse,
-} from '@octokit/types';
+import {OctokitResponse} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getContext = (override: { [key: string]: any }): Context => Object.assign({
