@@ -1,5 +1,7 @@
 import {Context} from '@actions/github/lib/context';
-import {Octokit} from '@octokit/rest';
+import {
+  OctokitResponse,
+} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getContext = (override: { [key: string]: any }): Context => Object.assign({
@@ -50,10 +52,11 @@ export const generateContext = (settings: { event?: string; action?: string; ref
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type CreateResponseFunctionType = <T>(data: T, override?: { [key: string]: any }) => Octokit.Response<T>;
+type CreateResponseFunctionType = <T>(data: T, override?: { [key: string]: any }) => OctokitResponse<T>;
 export const createResponse: CreateResponseFunctionType = (data, override = {}) => Object.assign({
   data,
   status: 0,
+  url: 'https://example.com',
   headers: {
     date: '',
     'x-ratelimit-limit': '',
