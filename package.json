@@ -28,6 +28,7 @@
   "dependencies": {
     "@actions/github": "^4.0.0",
     "@octokit/plugin-rest-endpoint-methods": "^4.0.0",
+    "@technote-space/github-action-helper": "^3.0.1",
     "js-yaml": "^3.14.0"
   },
   "devDependencies": {
