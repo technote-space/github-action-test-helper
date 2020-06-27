@@ -2,10 +2,10 @@ import global from './global';
 import {EOL} from 'os';
 import path from 'path';
 import fs, {PathLike} from 'fs';
+import {Octokit} from '@technote-space/github-action-helper/dist/types';
 import {getOctokit as getOctokitInstance} from '@actions/github';
 import yaml from 'js-yaml';
 import SpyInstance = jest.SpyInstance;
-import {Octokit} from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setActionEnv = (rootDir: string): { [key: string]: any } => {
@@ -167,4 +167,6 @@ export const testProperties = (object: any, checks: { [key: string]: any }): voi
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const getOctokit = (token?: string): Octokit => getOctokitInstance(token ?? 'test-token', {log: {warn: jest.fn()}});
