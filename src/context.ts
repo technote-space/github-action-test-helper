@@ -21,6 +21,9 @@ export const getContext = (override: { [key: string]: any }): Context => Object.
     owner: '',
     repo: '',
   },
+  job: '',
+  runNumber: 1,
+  runId: 1,
 }, override);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
