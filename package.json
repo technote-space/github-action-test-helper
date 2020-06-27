@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Test helper for GitHub Actions.",
   "author": {
     "name": "Technote",
@@ -26,7 +26,7 @@
     "dist"
   ],
   "dependencies": {
-    "@actions/github": "^3.0.0",
+    "@actions/github": "^4.0.0",
     "@octokit/plugin-rest-endpoint-methods": "^4.0.0",
     "js-yaml": "^3.14.0"
   },
@@ -50,6 +50,6 @@
     "lint": "eslint 'src/**/*.ts' '__tests__/**/*.ts' --cache",
     "lint:fix": "eslint --fix 'src/**/*.ts' '__tests__/**/*.ts'",
     "cover": "jest --coverage",
-    "update": "ncu -u && yarn install && yarn upgrade && yarn audit"
+    "update": "npx ncu -u && yarn install && yarn upgrade && yarn audit"
   }
 }
