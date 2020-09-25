@@ -7,6 +7,6 @@ export const exportVariableCalledWith = (spyOnMock: SpyInstance, pairs: { name: 
   expect(spyOnMock).toBeCalledTimes(pairs.length);
   pairs.forEach(({name, val}, index) => {
     expect(spyOnMock.mock.calls[index][0]).toBe(name);
-    expect(spyOnMock.mock.calls[index][1]).toBe(val);
+    expect(spyOnMock.mock.calls[index][1]).toEqual(val);
   });
 };
