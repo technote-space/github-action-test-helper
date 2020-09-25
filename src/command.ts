@@ -10,3 +10,12 @@ export const exportVariableCalledWith = (spyOnMock: SpyInstance, pairs: { name: 
     expect(spyOnMock.mock.calls[index][1]).toEqual(val);
   });
 };
+
+export const spyOnAddPath      = (): SpyInstance => jest.spyOn(core, 'addPath').mockReturnValue();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const addPathCalledWith = (spyOnMock: SpyInstance, paths: string[]): void => {
+  expect(spyOnMock).toBeCalledTimes(paths.length);
+  paths.forEach((path, index) => {
+    expect(spyOnMock.mock.calls[index][0]).toBe(path);
+  });
+};
