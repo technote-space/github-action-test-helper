@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import yaml from 'js-yaml';
+import {load} from 'js-yaml';
 
 export const encodeContent = (content: string): string => Buffer.from(content).toString('base64');
 
@@ -39,7 +39,7 @@ export const getApiFixture = (rootDir: string, name: string, ext = '.json'): any
       return JSON.parse(content);
     case '.yml':
     case '.yaml':
-      return yaml.safeLoad(content) || {};
+      return load(content) || {};
     default:
       return {content};
   }
