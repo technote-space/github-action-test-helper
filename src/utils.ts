@@ -3,13 +3,13 @@ import {EOL} from 'os';
 import path from 'path';
 import fs, {PathLike} from 'fs';
 import {getOctokit as getOctokitInstance} from '@actions/github';
-import yaml from 'js-yaml';
+import {load} from 'js-yaml';
 import SpyInstance = jest.SpyInstance;
 import {Octokit} from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setActionEnv = (rootDir: string): { [key: string]: any } => {
-  const actionSetting = yaml.safeLoad(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) || {};
+  const actionSetting = load(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) || {};
   const inputs        = 'inputs' in actionSetting && typeof actionSetting['inputs'] === 'object' ? actionSetting['inputs'] : {};
   const envs          = Object.keys(inputs).filter(key => 'default' in inputs[key]).map(key => ({
     key: `INPUT_${key.replace(/ /g, '_').toUpperCase()}`,
