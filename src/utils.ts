@@ -43,10 +43,16 @@ export const testChildProcess = (): void => {
     global.mockChildProcess.stdout = 'stdout';
     global.mockChildProcess.stderr = '';
     global.mockChildProcess.error  = null;
+    global.mockChildProcess.code   = 0;
   });
 };
 
-export const setChildProcessParams = (params: { stdout?: string | ((command: string) => string); stderr?: string | ((command: string) => string); error?: Error | ((command: string) => Error | null) }): void => {
+export const setChildProcessParams = (params: {
+  stdout?: string | ((command: string) => string);
+  stderr?: string | ((command: string) => string);
+  error?: Error | ((command: string) => Error | null);
+  code?: number | ((command: string) => number);
+}): void => {
   if (typeof params.stdout === 'string' || typeof params.stdout === 'function') {
     global.mockChildProcess.stdout = params.stdout;
   }
@@ -55,6 +61,9 @@ export const setChildProcessParams = (params: { stdout?: string | ((command: str
   }
   if (params.error instanceof Error || typeof params.error === 'function') {
     global.mockChildProcess.error = params.error;
+  }
+  if (typeof params.code === 'number' || typeof params.code === 'function') {
+    global.mockChildProcess.code = params.code;
   }
 };
 
