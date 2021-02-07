@@ -21,6 +21,7 @@ export const setupGlobal = (): void => {
     stdout: 'stdout',
     stderr: '',
     error: null,
+    code: 0,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     exec: jest.fn((...args: any[]) => {
       const callback = args.length === 2 ? args[1] : args[2];
@@ -53,7 +54,7 @@ export const setupGlobal = (): void => {
             callback(error);
           }
         } else if (event === 'close') {
-          callback();
+          callback(typeof global.mockChildProcess.code === 'function' ? global.mockChildProcess.code(args[0]) : global.mockChildProcess.code);
         }
       },
     })),

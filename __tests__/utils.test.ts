@@ -67,31 +67,40 @@ describe('testChildProcess, setChildProcessParams', () => {
     expect(global.mockChildProcess.stdout).toBe('stdout');
     expect(global.mockChildProcess.stderr).toBe('');
     expect(global.mockChildProcess.error).toBe(null);
-    expect(global.mockChildProcess.error).toBeFalsy();
+    expect(global.mockChildProcess.code).toBe(0);
 
-    setChildProcessParams({stdout: 'test-stdout', stderr: 'test-stderr', error: new Error('test-error')});
+    setChildProcessParams({
+      stdout: 'test-stdout',
+      stderr: 'test-stderr',
+      error: new Error('test-error'),
+      code: 123,
+    });
 
     expect(global.mockChildProcess.stdout).toBe('test-stdout');
     expect(global.mockChildProcess.stderr).toBe('test-stderr');
     expect(global.mockChildProcess.error).not.toBe(false);
+    expect(global.mockChildProcess.code).toBe(123);
   });
 
   it('should be reset env', () => {
     expect(global.mockChildProcess.stdout).toBe('stdout');
     expect(global.mockChildProcess.stderr).toBe('');
     expect(global.mockChildProcess.error).toBe(null);
+    expect(global.mockChildProcess.code).toBe(0);
   });
 
   it('should not set mock params', () => {
     expect(global.mockChildProcess.stdout).toBe('stdout');
     expect(global.mockChildProcess.stderr).toBe('');
     expect(global.mockChildProcess.error).toBe(null);
+    expect(global.mockChildProcess.code).toBe(0);
 
     setChildProcessParams({});
 
     expect(global.mockChildProcess.stdout).toBe('stdout');
     expect(global.mockChildProcess.stderr).toBe('');
     expect(global.mockChildProcess.error).toBe(null);
+    expect(global.mockChildProcess.code).toBe(0);
   });
 
   it('should set mock params function 1', () => {
@@ -100,6 +109,7 @@ describe('testChildProcess, setChildProcessParams', () => {
     expect(global.mockChildProcess.stdout).toBe('stdout');
     expect(global.mockChildProcess.stderr).toBe('');
     expect(global.mockChildProcess.error).toBe(null);
+    expect(global.mockChildProcess.code).toBe(0);
 
     setChildProcessParams({
       stdout: (command: string): string => command === 'test1' ? 'stdout1' : 'stdout2',
@@ -145,7 +155,11 @@ describe('testChildProcess, setChildProcessParams', () => {
         process.on('error', (err) => {
           reject(err);
         });
-        process.on('close', () => {
+        process.on('close', (code) => {
+          if (code) {
+            reject(new Error(`process exited with code ${code}`));
+          }
+
           resolve({stdout, stderr});
         });
       });
@@ -154,7 +168,8 @@ describe('testChildProcess, setChildProcessParams', () => {
     setChildProcessParams({
       stdout: (command: string): string => command === 'test1' ? 'stdout1' : 'stdout2',
       stderr: (command: string): string => command === 'test1' ? 'stderr1' : 'stderr2',
-      error: (command: string): Error | null => command === 'test1' ? null : new Error('err2'),
+      error: (command: string): Error | null => command === 'test2' ? new Error('err2') : null,
+      code: (command: string): number => command === 'test3' ? 1 : 0,
     });
 
     const {stdout, stderr} = await execCommand('test1');
@@ -162,10 +177,12 @@ describe('testChildProcess, setChildProcessParams', () => {
     expect(stderr).toBe('stderr1');
 
     await expect(execCommand('test2')).rejects.toThrow('err2');
+    await expect(execCommand('test3')).rejects.toThrow('process exited with code 1');
 
     execCalledWith(spy, [
       'test1',
       'test2',
+      'test3',
     ]);
   });
 });
