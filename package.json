@@ -36,15 +36,15 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
-    "@octokit/plugin-rest-endpoint-methods": "^4.13.4",
+    "@octokit/plugin-rest-endpoint-methods": "^4.13.5",
     "js-yaml": "^4.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/js-yaml": "^4.0.0",
-    "@types/node": "^14.14.32",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
+    "@types/node": "^14.14.33",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
     "eslint": "^7.21.0",
     "jest": "^26.6.3",
     "jest-circus": "^26.6.3",
