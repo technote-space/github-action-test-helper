@@ -176,4 +176,4 @@ export const testProperties = (object: any, checks: { [key: string]: any }): voi
   });
 };
 
-export const getOctokit = (token?: string): Octokit => getOctokitInstance(token ?? 'test-token');
+export const getOctokit = (token?: string): Octokit => getOctokitInstance(token ?? 'test-token') as Octokit;
