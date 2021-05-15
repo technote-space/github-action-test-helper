@@ -24,6 +24,9 @@ export const getContext = (override: { [key: string]: any }): Context => Object.
   job: '',
   runNumber: 1,
   runId: 1,
+  apiUrl: 'https://api.github.com',
+  serverUrl: 'https://github.com',
+  graphqlUrl: 'https://api.github.com/graphql',
 }, override);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
