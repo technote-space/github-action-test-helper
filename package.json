@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.7.24",
+  "version": "0.7.25",
   "description": "Test helper for GitHub Actions.",
   "keywords": [
     "github",
@@ -34,22 +34,22 @@
     "update": "npm_config_yes=true npx npm-check-updates -u --timeout 100000 && yarn install && yarn upgrade && yarn audit"
   },
   "dependencies": {
-    "@actions/core": "^1.4.0",
+    "@actions/core": "^1.5.0",
     "@actions/github": "^5.0.0",
     "@octokit/plugin-rest-endpoint-methods": "^5.8.0",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "@types/js-yaml": "^4.0.2",
-    "@types/node": "^16.6.2",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
-    "@typescript-eslint/parser": "^4.29.2",
+    "@types/js-yaml": "^4.0.3",
+    "@types/node": "^16.7.4",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
-    "jest": "^27.0.6",
-    "jest-circus": "^27.0.6",
+    "jest": "^27.1.0",
+    "jest-circus": "^27.1.0",
     "ts-jest": "^27.0.5",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.2"
   },
   "publishConfig": {
     "access": "public"

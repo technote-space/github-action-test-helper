@@ -9,7 +9,7 @@ import {Octokit} from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setActionEnv = (rootDir: string): { [key: string]: any } => {
-  const actionSetting = load(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) || {};
+  const actionSetting = load(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) as never || {};
   const inputs        = typeof actionSetting === 'object' && typeof actionSetting['inputs'] === 'object' ? actionSetting['inputs'] : {};
   const envs          = Object.keys(inputs).filter(key => 'default' in inputs[key]).map(key => ({
     key: `INPUT_${key.replace(/ /g, '_').toUpperCase()}`,
