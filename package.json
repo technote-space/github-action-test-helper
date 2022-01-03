@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.7.34",
+  "version": "0.7.35",
   "description": "Test helper for GitHub Actions.",
   "keywords": [
     "github",
@@ -40,12 +40,12 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^27.4.0",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^17.0.5",
+    "@types/node": "^17.0.7",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
-    "eslint": "^8.5.0",
+    "eslint": "^8.6.0",
     "jest": "^27.4.5",
     "jest-circus": "^27.4.5",
     "ts-jest": "^27.1.2",
