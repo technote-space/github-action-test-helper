@@ -1,8 +1,8 @@
 /* eslint-disable no-magic-numbers */
-import {EOL} from 'os';
-import {exec, spawn} from 'child_process';
-import fs from 'fs';
+import { EOL } from 'os';
+import { exec, spawn } from 'child_process';
 import path from 'path';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import {
   testEnv,
   testChildProcess,
@@ -23,6 +23,7 @@ import {
   getLogStdout,
 } from '../src';
 import global from '../src/global';
+import fs from 'fs';
 
 beforeAll(() => {
   process.env.TEST_ENV = 'test';
@@ -105,7 +106,7 @@ describe('testChildProcess, setChildProcessParams', () => {
 
   it('should set mock params function 1', () => {
     const spy      = spyOnExec();
-    const callback = jest.fn();
+    const callback = vi.fn();
     expect(global.mockChildProcess.stdout).toBe('stdout');
     expect(global.mockChildProcess.stderr).toBe('');
     expect(global.mockChildProcess.error).toBe(null);
@@ -139,7 +140,7 @@ describe('testChildProcess, setChildProcessParams', () => {
     const spy         = spyOnSpawn();
     const execCommand = (command: string, cwd?: string): Promise<{ stdout: string; stderr: string }> => {
       return new Promise((resolve, reject) => {
-        const process = spawn(command, [], {shell: true, cwd});
+        const process = spawn(command, [], { shell: true, cwd });
         let stdout    = '';
         let stderr    = '';
         process.stdout.on('data', (data) => {
@@ -157,10 +158,10 @@ describe('testChildProcess, setChildProcessParams', () => {
         });
         process.on('close', (code) => {
           if (code) {
-            reject(new Error(`process exited with code ${code}`));
+            reject(new Error(`process exited with code ${ code }`));
           }
 
-          resolve({stdout, stderr});
+          resolve({ stdout, stderr });
         });
       });
     };
@@ -172,7 +173,7 @@ describe('testChildProcess, setChildProcessParams', () => {
       code: (command: string): number => command === 'test3' ? 1 : 0,
     });
 
-    const {stdout, stderr} = await execCommand('test1');
+    const { stdout, stderr } = await execCommand('test1');
     expect(stdout).toBe('stdout1');
     expect(stderr).toBe('stderr1');
 
@@ -328,16 +329,16 @@ describe('spyOnStdout, stdoutCalledWith, stdoutContains, stdoutNotContains, getL
 describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains', () => {
   it('should spy on stdout 1', () => {
     const spy      = spyOnExec();
-    const callback = jest.fn();
+    const callback = vi.fn();
 
     exec('test1', callback);
     exec('test2', {}, callback);
-    exec('test3', {cwd: '.work'}, callback);
+    exec('test3', { cwd: '.work' }, callback);
 
     execCalledWith(spy, [
       'test1',
       'test2',
-      ['test3', {cwd: '.work'}],
+      ['test3', { cwd: '.work' }],
     ]);
 
     execContains(spy, [
@@ -363,7 +364,7 @@ describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains',
     const spy         = spyOnSpawn();
     const execCommand = (command: string, cwd?: string): Promise<{ stdout: string; stderr: string }> => {
       return new Promise((resolve, reject) => {
-        const process = spawn(command, [], {shell: true, cwd});
+        const process = spawn(command, [], { shell: true, cwd });
         let stdout    = '';
         let stderr    = '';
         process.stdout.on('data', (data) => {
@@ -386,7 +387,7 @@ describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains',
           reject(err);
         });
         process.on('close', () => {
-          resolve({stdout, stderr});
+          resolve({ stdout, stderr });
         });
         process.on('exit', () => {
           //
@@ -399,7 +400,7 @@ describe('spyOnExec, spyOnSpawn, execCalledWith, execContains, execNotContains',
 
     execCalledWith(spy, [
       'test1',
-      ['test2', [], {shell: true, cwd: '.work'}],
+      ['test2', [], { shell: true, cwd: '.work' }],
     ]);
 
     execContains(spy, [
@@ -428,16 +429,16 @@ describe('testProperties', () => {
       test1: 1,
       test2: 'test2',
       test3: [1, 2, 3],
-      test4: {a: 'b'},
+      test4: { a: 'b' },
       test5: 1,
       test6: 'test2',
       test7: [1, 2, 3],
-      test8: {a: 'b'},
+      test8: { a: 'b' },
     }, {
       test1: 1,
       test2: 'test2',
       test3: [1, 2, 3],
-      test4: {a: 'b'},
+      test4: { a: 'b' },
     });
   });
 
@@ -447,16 +448,16 @@ describe('testProperties', () => {
         test1: 1,
         test2: 'test2',
         test3: [1, 2, 3],
-        test4: {a: 'b'},
+        test4: { a: 'b' },
         test5: 1,
         test6: 'test2',
         test7: [1, 2, 3],
-        test8: {a: 'b'},
+        test8: { a: 'b' },
       }, {
         test1: 1,
         test2: 'test2',
         test3: [1, 2, 3],
-        test4: {a: 'c'},
+        test4: { a: 'c' },
       });
     }).toThrow();
   });

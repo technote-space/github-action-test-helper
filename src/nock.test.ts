@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import path from 'path';
-import {getConfigFixture, getApiFixture, disableNetConnect, encodeContent} from '../src';
+import { describe, expect, it, vi } from 'vitest';
+import { getConfigFixture, getApiFixture, disableNetConnect, encodeContent } from '../src';
 
 describe('getConfigFixture', () => {
   it('should get config fixture', () => {
@@ -47,9 +48,9 @@ describe('getApiFixture', () => {
 });
 
 describe('disableNetConnect', () => {
-  const fn1 = jest.fn();
-  const fn2 = jest.fn();
-  const fn3 = jest.fn();
+  const fn1 = vi.fn();
+  const fn2 = vi.fn();
+  const fn3 = vi.fn();
   disableNetConnect({
     disableNetConnect: fn1,
     cleanAll: fn2,

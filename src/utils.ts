@@ -1,19 +1,21 @@
+import type { SpyInstance } from 'vitest';
+import type { Octokit } from './types';
+import type { PathLike } from 'fs';
 import global from './global';
-import {EOL} from 'os';
+import { EOL } from 'os';
 import path from 'path';
-import fs, {PathLike} from 'fs';
-import {getOctokit as getOctokitInstance} from '@actions/github';
-import {load} from 'js-yaml';
-import SpyInstance = jest.SpyInstance;
-import {Octokit} from './types';
+import fs from 'fs';
+import { getOctokit as getOctokitInstance } from '@actions/github';
+import { load } from 'js-yaml';
+import { afterEach, beforeEach, expect, vi } from 'vitest';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setActionEnv = (rootDir: string): { [key: string]: any } => {
   const actionSetting = load(fs.readFileSync(path.resolve(rootDir, 'action.yml'), 'utf8')) as never || {};
   const inputs        = typeof actionSetting === 'object' && typeof actionSetting['inputs'] === 'object' ? actionSetting['inputs'] : {};
   const envs          = Object.keys(inputs).filter(key => 'default' in inputs[key]).map(key => ({
-    key: `INPUT_${key.replace(/ /g, '_').toUpperCase()}`,
-    value: `${inputs[key].default}`,
+    key: `INPUT_${ key.replace(/ /g, '_').toUpperCase() }`,
+    value: `${ inputs[key].default }`,
   }));
   envs.forEach(env => {
     process.env[env.key] = env.value;
@@ -25,8 +27,8 @@ export const testEnv = (rootDir?: string): void => {
   const OLD_ENV = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
-    process.env = {...OLD_ENV};
+    vi.resetModules();
+    process.env = { ...OLD_ENV };
     delete process.env.NODE_ENV;
     if (rootDir) {
       setActionEnv(rootDir);
@@ -78,9 +80,12 @@ export const testFs = (defaultExists = false): (boolean) => void => {
     if (stop) {
       return;
     }
-    spy.push(jest.spyOn(fs, 'writeFileSync').mockImplementation(jest.fn()));
-    spy.push(jest.spyOn(fs, 'mkdirSync').mockImplementation(jest.fn()));
-    spy.push(jest.spyOn(fs, 'existsSync').mockImplementation((path: PathLike): boolean => {
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    spy.push(vi.spyOn(fs, 'writeFileSync').mockImplementation(() => {
+    }));
+    spy.push(vi.spyOn(fs, 'mkdirSync').mockImplementation(() => undefined));
+    spy.push(vi.spyOn(fs, 'existsSync').mockImplementation((path: PathLike): boolean => {
       if (typeof callback === 'function') {
         return callback(path);
       }
@@ -120,7 +125,7 @@ export const testFs = (defaultExists = false): (boolean) => void => {
   };
 };
 
-export const spyOnStdout       = (): SpyInstance => jest.spyOn(global.mockStdout, 'write');
+export const spyOnStdout       = (): SpyInstance => global.mockStdout.write;
 export const stdoutCalledWith  = (spyOnMock: SpyInstance, messages: string[]): void => {
   expect(spyOnMock).toBeCalledTimes(messages.length);
   messages.forEach((message, index) => {
@@ -134,8 +139,8 @@ export const stdoutNotContains = (spyOnMock: SpyInstance, messages: string[]): v
   expect(spyOnMock.mock.calls.map(value => value[0].trim())).toEqual(expect.not.arrayContaining(messages));
 };
 
-export const spyOnExec       = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'exec');
-export const spyOnSpawn      = (): SpyInstance => jest.spyOn(global.mockChildProcess, 'spawn');
+export const spyOnExec       = (): SpyInstance => global.mockChildProcess.exec;
+export const spyOnSpawn      = (): SpyInstance => global.mockChildProcess.spawn;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const execCalledWith  = (spyOnMock: SpyInstance, messages: (string | any[])[]): void => {
   expect(spyOnMock).toBeCalledTimes(messages.length);

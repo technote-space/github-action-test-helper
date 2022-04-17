@@ -1,10 +1,12 @@
 /* eslint-disable no-magic-numbers */
-import {EOL} from 'os';
+import type childProcess from 'child_process';
+import { EOL } from 'os';
+import { vi } from 'vitest';
 import global from './global';
 
 export const setupGlobal = (): void => {
   global.mockStdout    = {
-    write: jest.fn(),
+    write: vi.fn(),
   };
   process.stdout.write = global.mockStdout.write;
 
@@ -12,10 +14,10 @@ export const setupGlobal = (): void => {
   type converterType = (value: any) => boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const converter = (prefix = ''): converterType => (value: any): boolean => process.stdout.write(prefix + JSON.stringify(value, null, '\t') + EOL);
-  console.log     = jest.fn(converter());
-  console.info    = jest.fn(converter('__info__'));
-  console.error   = jest.fn(converter('__error__'));
-  console.warn    = jest.fn(converter('__warning__'));
+  console.log     = vi.fn(converter());
+  console.info    = vi.fn(converter('__info__'));
+  console.error   = vi.fn(converter('__error__'));
+  console.warn    = vi.fn(converter('__warning__'));
 
   global.mockChildProcess = {
     stdout: 'stdout',
@@ -23,7 +25,7 @@ export const setupGlobal = (): void => {
     error: null,
     code: 0,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    exec: jest.fn((...args: any[]) => {
+    exec: vi.fn((...args: any[]) => {
       const callback = args.length === 2 ? args[1] : args[2];
       callback(
         typeof global.mockChildProcess.error === 'function' ? global.mockChildProcess.error(args[0]) : global.mockChildProcess.error,
@@ -32,7 +34,7 @@ export const setupGlobal = (): void => {
       );
     }),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    spawn: jest.fn((...args: any[]) => ({
+    spawn: vi.fn((...args: any[]) => ({
       stdout: {
         on: (event, callback): void => {
           if (event === 'data') {
@@ -59,10 +61,11 @@ export const setupGlobal = (): void => {
       },
     })),
   };
-  jest.mock('child_process', () => (Object.assign(jest.requireActual('child_process'), {
+  vi.mock('child_process', async() => ({
+    ...await vi.importActual<typeof childProcess>('child_process'),
     exec: global.mockChildProcess.exec,
     spawn: global.mockChildProcess.spawn,
-  })));
+  }));
 
   process.env.GITHUB_ACTOR = 'octocat';
   process.env.GITHUB_ENV   = '/home/runner/work/_temp/_runner_file_commands/set_env_aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
