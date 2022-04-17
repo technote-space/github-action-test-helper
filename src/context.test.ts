@@ -1,5 +1,6 @@
 /* eslint-disable no-magic-numbers */
-import {getContext, generateContext, createResponse} from '../src';
+import { describe, expect, it } from 'vitest';
+import { getContext, generateContext, createResponse } from '../src';
 
 describe('getContext', () => {
   it('should get context', () => {
@@ -101,12 +102,12 @@ describe('createResponse', () => {
   });
 
   it('should override', () => {
-    const response = createResponse<number>(123, {data: 234});
+    const response = createResponse<number>(123, { data: 234 });
     expect(response).toHaveProperty('data');
     expect(response.data).toBe(234);
 
     const iterator = response[Symbol.iterator]();
     expect(iterator).toHaveProperty('next');
-    expect(iterator.next()).toEqual({done: true, value: true});
+    expect(iterator.next()).toEqual({ done: true, value: true });
   });
 });
