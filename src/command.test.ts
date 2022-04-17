@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
-import {spyOnExportVariable, exportVariableCalledWith, spyOnAddPath, addPathCalledWith} from '../src';
-import {addPath, exportVariable} from '@actions/core';
+import { describe, it } from 'vitest';
+import { spyOnExportVariable, exportVariableCalledWith, spyOnAddPath, addPathCalledWith } from '../src';
+import { addPath, exportVariable } from '@actions/core';
 
 describe('spyOnExportVariable, exportVariableCalledWith', () => {
   it('should spy on exportVariable', () => {
@@ -10,8 +11,8 @@ describe('spyOnExportVariable, exportVariableCalledWith', () => {
     exportVariable('test-name2', ['test-value2-1', 'test-value2-2']);
 
     exportVariableCalledWith(spy, [
-      {name: 'test-name1', val: 'test-value1'},
-      {name: 'test-name2', val: ['test-value2-1', 'test-value2-2']},
+      { name: 'test-name1', val: 'test-value1' },
+      { name: 'test-name2', val: ['test-value2-1', 'test-value2-2'] },
     ]);
   });
 });
