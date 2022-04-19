@@ -23,6 +23,7 @@
   "type": "module",
   "exports": "./dist/index.mjs",
   "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
