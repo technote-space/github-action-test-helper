@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Test helper for GitHub Actions.",
   "keywords": [
     "github",
@@ -21,21 +21,18 @@
     "url": "https://technote.space"
   },
   "type": "module",
-  "main": "dist/index.mjs",
   "exports": "./dist/index.mjs",
+  "main": "dist/index.mjs",
   "files": [
     "dist"
   ],
-  "peerDependencies": {
-    "vitest": "*"
-  },
   "scripts": {
     "build": "tsc && rm -f dist/*.js && rollup -c",
     "cover": "vitest run --coverage",
     "lint": "eslint 'src/**/*.ts' --cache",
     "lint:fix": "eslint --fix 'src/**/*.ts'",
-    "typecheck": "tsc --noEmit",
     "test": "yarn lint && yarn typecheck && yarn cover",
+    "typecheck": "tsc --noEmit",
     "update": "npm_config_yes=true npx npm-check-updates -u --timeout 100000 && yarn install && yarn upgrade && yarn audit"
   },
   "dependencies": {
@@ -56,6 +53,9 @@
     "eslint": "^8.13.0",
     "rollup": "^2.70.2",
     "typescript": "^4.6.3"
+  },
+  "peerDependencies": {
+    "vitest": "*"
   },
   "publishConfig": {
     "access": "public"
