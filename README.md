@@ -26,7 +26,29 @@ Test helper for GitHub Actions.
 ## Usage
 1. Install  
 `npm i @technote-space/github-action-test-helper`
-1. Use
+2. Setup Vitest
+```js
+/// <reference types="vitest" />
+import { defineConfig } from 'vite';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  test: {
+    setupFiles: './src/setup.ts',
+    clearMocks: true,
+    mockReset: true,
+    restoreMocks: true,
+    coverage: {
+      reporter: ['html', 'lcov'],
+    },
+    deps: {
+      // The following setting is required
+      inline: [/github-action-test-helper/]
+    },
+  },
+});
+```
+3. Use
 ```js
 import {
 	getContext,
