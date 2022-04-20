@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
-import { EOL } from 'os';
 import { exec, spawn } from 'child_process';
+import fs from 'fs';
+import { EOL } from 'os';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import {
@@ -23,7 +24,6 @@ import {
   getLogStdout,
 } from '../src';
 import global from '../src/global';
-import fs from 'fs';
 
 beforeAll(() => {
   process.env.TEST_ENV = 'test';
