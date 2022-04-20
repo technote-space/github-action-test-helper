@@ -1,5 +1,5 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import { load } from 'js-yaml';
 import { afterEach, beforeEach } from 'vitest';
 
