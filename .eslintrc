@@ -110,6 +110,7 @@
     "import/order": [2, {
       "groups": ["type", "builtin", "external", "internal", "parent", "sibling", "index", "object"],
       "alphabetize": { "order": "asc", "caseInsensitive": true }
-    }]
+    }],
+    "@typescript-eslint/no-non-null-assertion": "off"
   }
 }

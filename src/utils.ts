@@ -93,7 +93,7 @@ export const testFs = (defaultExists = false): (boolean) => void => {
       // eslint-disable-next-line no-magic-numbers
       const result = count < existsData.length ? existsData[count] : existsData[existsData.length - 1];
       count++;
-      return result;
+      return result!;
     }));
   };
   const clearMock = (): void => {
@@ -129,7 +129,7 @@ export const spyOnStdout       = (): SpyInstance => global.mockStdout.write;
 export const stdoutCalledWith  = (spyOnMock: SpyInstance, messages: string[]): void => {
   expect(spyOnMock).toBeCalledTimes(messages.length);
   messages.forEach((message, index) => {
-    expect(spyOnMock.mock.calls[index][0]).toBe(message + EOL);
+    expect(spyOnMock.mock.calls[index]![0]).toBe(message + EOL);
   });
 };
 export const stdoutContains    = (spyOnMock: SpyInstance, messages: string[]): void => {
@@ -146,13 +146,13 @@ export const execCalledWith  = (spyOnMock: SpyInstance, messages: (string | any[
   expect(spyOnMock).toBeCalledTimes(messages.length);
   messages.forEach((message, index) => {
     if (typeof message === 'string') {
-      expect(spyOnMock.mock.calls[index][0]).toBe(message);
+      expect(spyOnMock.mock.calls[index]![0]).toBe(message);
     } else {
       message.forEach((message, index2) => {
-        if (typeof spyOnMock.mock.calls[index][index2] === 'object') {
-          expect(spyOnMock.mock.calls[index][index2]).toEqual(message);
+        if (typeof spyOnMock.mock.calls[index]![index2] === 'object') {
+          expect(spyOnMock.mock.calls[index]![index2]).toEqual(message);
         } else {
-          expect(spyOnMock.mock.calls[index][index2]).toBe(message);
+          expect(spyOnMock.mock.calls[index]![index2]).toBe(message);
         }
       });
     }

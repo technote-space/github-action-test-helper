@@ -127,13 +127,13 @@ describe('testChildProcess, setChildProcessParams', () => {
     ]);
     expect(callback).toBeCalledTimes(2);
     expect(callback.mock.calls[0]).toHaveLength(3);
-    expect(callback.mock.calls[0][0]).toEqual(new Error('err1'));
-    expect(callback.mock.calls[0][1]).toBe('stdout1');
-    expect(callback.mock.calls[0][2]).toBe('stderr1');
+    expect(callback.mock.calls[0]![0]).toEqual(new Error('err1'));
+    expect(callback.mock.calls[0]![1]).toBe('stdout1');
+    expect(callback.mock.calls[0]![2]).toBe('stderr1');
     expect(callback.mock.calls[1]).toHaveLength(3);
-    expect(callback.mock.calls[1][0]).toEqual(new Error('err2'));
-    expect(callback.mock.calls[1][1]).toBe('stdout2');
-    expect(callback.mock.calls[1][2]).toBe('stderr2');
+    expect(callback.mock.calls[1]![0]).toEqual(new Error('err2'));
+    expect(callback.mock.calls[1]![1]).toBe('stdout2');
+    expect(callback.mock.calls[1]![2]).toBe('stderr2');
   });
 
   it('should set mock params function 2', async() => {
