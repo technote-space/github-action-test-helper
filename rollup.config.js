@@ -6,7 +6,7 @@ export default {
     file: 'dist/index.mjs',
     format: 'es',
   },
-  external: ['vitest'],
+  external: ['vitest', 'fs', 'path', 'js-yaml', 'os', '@actions/github', '@actions/core'],
   plugins: [
     pluginTypescript(),
   ],
