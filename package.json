@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Test helper for GitHub Actions.",
   "keywords": [
     "github",
@@ -21,7 +21,10 @@
     "url": "https://technote.space"
   },
   "type": "module",
-  "exports": "./dist/index.mjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
   "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
