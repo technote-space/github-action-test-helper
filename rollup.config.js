@@ -1,13 +1,26 @@
 import pluginTypescript from '@rollup/plugin-typescript';
 
-export default {
+const common = {
   input: 'src/index.ts',
-  output: {
-    file: 'dist/index.mjs',
-    format: 'es',
-  },
   external: ['vitest', 'fs', 'path', 'js-yaml', 'os', '@actions/github', '@actions/core'],
   plugins: [
     pluginTypescript(),
   ],
 };
+
+export default [
+  {
+    ...common,
+    output: {
+      file: 'dist/index.cjs',
+      format: 'cjs',
+    },
+  },
+  {
+    ...common,
+    output: {
+      file: 'dist/index.mjs',
+      format: 'es',
+    },
+  },
+];
