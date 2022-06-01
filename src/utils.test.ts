@@ -4,6 +4,7 @@ import fs from 'fs';
 import { EOL } from 'os';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import global from './global.js';
 import {
   testEnv,
   testChildProcess,
@@ -22,8 +23,7 @@ import {
   setActionEnv,
   getOctokit,
   getLogStdout,
-} from '../src';
-import global from '../src/global';
+} from './utils.js';
 
 beforeAll(() => {
   process.env.TEST_ENV = 'test';

@@ -2,7 +2,7 @@
 import type childProcess from 'child_process';
 import { EOL } from 'os';
 import { vi } from 'vitest';
-import global from './global';
+import global from './global.js';
 
 export const setupGlobal = (): void => {
   global.mockStdout    = {

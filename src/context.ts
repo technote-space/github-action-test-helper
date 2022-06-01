@@ -1,4 +1,4 @@
-import type { Context } from '@actions/github/lib/context';
+import type { Context } from '@actions/github/lib/context.js';
 import type { OctokitResponse } from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
