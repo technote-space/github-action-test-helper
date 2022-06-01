@@ -1,3 +1,3 @@
-import { setupGlobal } from '.';
+import { setupGlobal } from './index.js';
 
 setupGlobal();

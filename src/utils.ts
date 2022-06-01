@@ -1,4 +1,4 @@
-import type { Octokit } from './types';
+import type { Octokit } from './types.js';
 import type { PathLike } from 'fs';
 import type { SpyInstance } from 'vitest';
 import fs from 'fs';
@@ -7,7 +7,7 @@ import path from 'path';
 import { getOctokit as getOctokitInstance } from '@actions/github';
 import { load } from 'js-yaml';
 import { afterEach, beforeEach, expect, vi } from 'vitest';
-import global from './global';
+import global from './global.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setActionEnv = (rootDir: string): { [key: string]: any } => {

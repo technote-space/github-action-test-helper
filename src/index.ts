@@ -1,7 +1,7 @@
-export * from './context';
-export * from './nock';
-export * from './utils';
-export * from './command';
+export * from './context.js';
+export * from './nock.js';
+export * from './utils.js';
+export * from './command.js';
 
-export * from './global';
-export * from './global.setup';
+export * from './global.js';
+export * from './global.setup.js';

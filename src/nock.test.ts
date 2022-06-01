@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import path from 'path';
 import { describe, expect, it, vi } from 'vitest';
-import { getConfigFixture, getApiFixture, disableNetConnect, encodeContent } from '../src';
+import { getConfigFixture, getApiFixture, disableNetConnect, encodeContent } from './nock.js';
 
 describe('getConfigFixture', () => {
   it('should get config fixture', () => {

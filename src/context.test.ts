@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import { describe, expect, it } from 'vitest';
-import { getContext, generateContext, createResponse } from '../src';
+import { getContext, generateContext, createResponse } from './context.js';
 
 describe('getContext', () => {
   it('should get context', () => {

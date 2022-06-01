@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { addPath, exportVariable } from '@actions/core';
 import { describe, it } from 'vitest';
-import { spyOnExportVariable, exportVariableCalledWith, spyOnAddPath, addPathCalledWith } from '../src';
+import { spyOnExportVariable, exportVariableCalledWith, spyOnAddPath, addPathCalledWith } from './command.js';
 
 describe('spyOnExportVariable, exportVariableCalledWith', () => {
   it('should spy on exportVariable', () => {
