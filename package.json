@@ -42,9 +42,9 @@
   "dependencies": {
     "@actions/core": "^1.9.0",
     "@actions/github": "^5.0.3",
-    "@octokit/plugin-rest-endpoint-methods": "^5.16.2",
+    "@octokit/plugin-rest-endpoint-methods": "^6.0.0",
     "js-yaml": "^4.1.0",
-    "vitest": "^0.17.1"
+    "vitest": "^0.18.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.3",
@@ -56,7 +56,7 @@
     "c8": "^7.11.3",
     "eslint": "^8.19.0",
     "eslint-plugin-import": "^2.26.0",
-    "rollup": "^2.75.7",
+    "rollup": "^2.76.0",
     "typescript": "^4.7.4"
   },
   "peerDependencies": {
