@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.9.9",
+  "version": "0.9.10",
   "description": "Test helper for GitHub Actions.",
   "keywords": [
     "github",
@@ -42,7 +42,7 @@
   "dependencies": {
     "@actions/core": "^1.9.0",
     "@actions/github": "^5.0.3",
-    "@octokit/plugin-rest-endpoint-methods": "^6.1.2",
+    "@octokit/plugin-rest-endpoint-methods": "^6.2.0",
     "js-yaml": "^4.1.0",
     "vitest": "^0.19.1"
   },
