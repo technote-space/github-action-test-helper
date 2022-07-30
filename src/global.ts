@@ -1,14 +1,14 @@
 import type { ExecException } from 'child_process';
-import type { SpyInstanceFn } from 'vitest';
+import type { Mock } from 'vitest';
 
 declare global {
   interface Global {
     mockStdout: {
-      write: SpyInstanceFn;
+      write: Mock;
     };
     mockChildProcess: {
-      exec: SpyInstanceFn;
-      spawn: SpyInstanceFn;
+      exec: Mock;
+      spawn: Mock;
       stdout: string | ((command: string) => string);
       stderr: string | ((command: string) => string);
       error: ExecException | null | ((command: string) => ExecException | null);
