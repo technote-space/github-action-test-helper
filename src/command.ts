@@ -22,3 +22,13 @@ export const addPathCalledWith = (spyOnMock: SpyInstance, paths: string[]): void
     expect(spyOnMock.mock.calls[index]![0]).toBe(path);
   });
 };
+
+export const spyOnSetOutput      = (): SpyInstance => vi.spyOn(core, 'setOutput').mockReturnValue();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const setOutputCalledWith = (spyOnMock: SpyInstance, pairs: { name: string, value: any }[]): void => {
+  expect(spyOnMock).toBeCalledTimes(pairs.length);
+  pairs.forEach(({ name, value }, index) => {
+    expect(spyOnMock.mock.calls[index]![0]).toBe(name);
+    expect(spyOnMock.mock.calls[index]![1]).toEqual(value);
+  });
+};
