@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/github-action-test-helper",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "description": "Test helper for GitHub Actions.",
   "keywords": [
     "github",
