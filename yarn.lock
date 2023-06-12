@@ -409,10 +409,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/node@*", "@types/node@^20.2.5":
-  version "20.2.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.2.5.tgz#26d295f3570323b2837d322180dfbf1ba156fefb"
-  integrity sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==
+"@types/node@*", "@types/node@^20.3.0":
+  version "20.3.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.3.0.tgz#719498898d5defab83c3560f45d8498f58d11938"
+  integrity sha512-cumHmIAf6On83X7yP+LrsEyUOf/YlociZelmpRYaGFydoaPdxdt80MAbu6vWerQT2COCp2nPvHdsbD7tHn/YlQ==
 
 "@types/semver@^7.3.12":
   version "7.5.0"
@@ -1962,10 +1962,10 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rollup@^3.21.0, rollup@^3.24.0:
-  version "3.24.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.24.0.tgz#865dee1fe0bb528747b59914dfab25e6f480e370"
-  integrity sha512-OgraHOIg2YpHQTjl0/ymWfFNBEyPucB7lmhXrQUh38qNOegxLapSPFs9sNr0qKR75awW41D93XafoR2QfhBdUQ==
+rollup@^3.21.0, rollup@^3.25.1:
+  version "3.25.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.25.1.tgz#9fff79d22ff1a904b2b595a2fb9bc3793cb987d8"
+  integrity sha512-tywOR+rwIt5m2ZAWSe5AIJcTat8vGlnPFAv15ycCrw33t6iFsXZ6mzHVFh2psSjxQPmI+xgzMZZizUAukBI4aQ==
   optionalDependencies:
     fsevents "~2.3.2"
 
